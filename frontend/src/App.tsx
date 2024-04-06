@@ -6,15 +6,12 @@ import Listing from './components/Listing/Listing';
 
 const listingProps = {
   user: "JaneDoe42",
-  description: "Looking to trade a brand new, unopened set of wireless headphones.",
-  have: "Wireless Headphones, Brand New",
-  want: "Smart Watch, good condition",
-  tags: ["electronics", "trade", "headphones", "smart watch"],
+  description: "Need 300 level electives",
+  have: "PHIL 300",
+  want: "CS 310, CS 349, CS 345, CS 343",
+  tags: ["CS", "Electives", "300+"],
   created_at: new Date().toLocaleDateString(),
-  title: "Trade New Headphones for Smart Watch",
-  thumbnail_url: "https://example.com/path/to/image.jpg",
 };
-
 
 function App() {
   return (
