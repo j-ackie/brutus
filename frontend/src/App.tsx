@@ -2,8 +2,7 @@ import React from 'react';
 import logo from './logo.svg';
 import './App.css';
 import { IconButton, TextButton } from './global/Buttons';
-import Listing from './components/listing/Listing';
-
+import Listing from './components/Listing/Listing';
 
 const listingProps = {
   user: "JaneDoe42",
@@ -16,6 +15,7 @@ const listingProps = {
   thumbnail_url: "https://example.com/path/to/image.jpg",
 };
 
+
 function App() {
   return (
     <div className="App">
@@ -25,7 +25,7 @@ function App() {
         </svg>
       </IconButton>
       <TextButton text='hello world' onClick={() => {console.log("hi")}}/>
-      <Listing {...listingProps}></Listing>
+      <Listing {...listingProps}/>
     </div>
   );
 }
