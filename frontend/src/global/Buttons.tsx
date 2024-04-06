@@ -1,18 +1,22 @@
 import React, { ReactNode } from 'react'
+import { COLORS } from './Colors'
 
-function IconButton({icon, color, children, ...props} : {icon : string, color : string, children : ReactNode}) {
+function IconButton({color, onClick, children, ...props} : {icon : string, color : string, onClick: any, children?: ReactNode}) {
   return (
-    <div style={{color: color}} {...props}>
+    <button {...props} onClick={onClick}
+      className="rounded-full border border-slate-600 p-2">
       {children}
-    </div>
+    </button>
   )
 }
 
-function TextButton() {
+function TextButton({text, color = COLORS.text, onClick, ...props} : {text : string, color? : string, onClick : any}) {
   return (
-    <div>
-      TextButton
-    </div>
+    <button style={{color: color}} onClick={onClick}
+      className="bg-black p-3 "
+    >
+      {text}
+    </button>
   )
 }
 
