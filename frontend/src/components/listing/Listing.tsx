@@ -2,7 +2,7 @@ import React from 'react'
 import { useState, useEffect } from "react";
 import { Label, RegText, SubHeading, Heading } from "../../global/Text";
 
-const Listing = (props, ) => {
+const Listing = ( {...props} ) => {
   const user = props.user
   const description = props.description
   const have = props.have
@@ -21,28 +21,28 @@ const Listing = (props, ) => {
             <div className="card-title"> {props.title} </div>
               <div className="card-text">
                 <div>
-                  <Label>Posted by:</Label>
-                  <RegText>{user}</RegText>
+                  <Label text="Posted by:"></Label>
+                  <RegText text={user}></RegText>
                 </div>
                 <div>
-                  <Label>Description:</Label>
-                  <RegText>{description}</RegText>
+                  <Label text="Description:"></Label>
+                  <RegText text={description}></RegText>
                 </div>
                 <div>
-                  <Label>Have:</Label>
-                  <RegText>{have}</RegText>
+                  <Label text="Have:"></Label>
+                  <RegText text={have}></RegText>
                 </div>
                 <div>
-                  <Label>Want:</Label>
-                  <RegText>{want}</RegText>
+                  <Label text="Want:"></Label>
+                  <RegText text={want}></RegText>
                 </div>
                 <div>
-                  <Label>Tags:</Label>
-                  <RegText>{tags}</RegText>
+                  <Label text="Tags:"></Label>
+                  <RegText text={tags}></RegText>
                 </div>
                 <div>
-                  <Label>Created at:</Label>
-                  <RegText>{created_at}</RegText>
+                  <Label text="Created at:"></Label>
+                  <RegText text={created_at}></RegText>
                 </div>
               </div>
           </div>
