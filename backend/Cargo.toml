@@ -8,7 +8,11 @@ edition = "2021"
 [dependencies]
 actix-web = { version = "4.5.1" }
 anyhow = "1.0.81"
+chrono = "0.4.37"
 dotenv = "0.15.0"
+jsonwebtoken = "9.3.0"
+oauth2 = "4.4.2"
+reqwest = { version = "0.12.3", features = ["json"] }
 serde = { version = "1.0.197", features = ["derive"] }
 sqlx = { version = "0.7", features = [
     "runtime-tokio",
