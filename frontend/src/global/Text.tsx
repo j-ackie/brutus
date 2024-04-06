@@ -1,7 +1,13 @@
 import React from 'react'
 import { COLORS } from './Colors'
 
-function RegText({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
+type TextProps = {
+  text: string,
+  color? :string
+  [x:string]:any
+}
+
+function Label({text, color=COLORS.text, ...props} : TextProps) {
   return (
     <div style={{color: color, fontSize: '0.9rem'}} {...props}>
       {text}
@@ -9,7 +15,7 @@ function RegText({text, color=COLORS.text, ...props} : {text: string, color?: st
   )
 }
 
-function Label({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
+function RegText({text, color=COLORS.text, ...props} : TextProps) {
   return (
     <div style={{color: color, fontSize: '0.7rem'}} {...props}>
       {text}
@@ -17,7 +23,7 @@ function Label({text, color=COLORS.text, ...props} : {text: string, color?: stri
   )
 }
 
-function SubHeading({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
+function SubHeading({text, color=COLORS.text, ...props} : TextProps) {
   return (
     <div style={{color: color, fontSize: '1.2rem'}} {...props}>
       {text}
@@ -25,7 +31,7 @@ function SubHeading({text, color=COLORS.text, ...props} : {text: string, color?:
   )
 }
 
-function Heading({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
+function Heading({text, color=COLORS.text, ...props} : TextProps) {
   return (
     <div style={{color: color, fontSize: '2rem'}} {...props}>
       {text}
