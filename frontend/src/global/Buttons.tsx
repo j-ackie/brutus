@@ -14,7 +14,7 @@ function IconButton({color, onClick, children, ...props} : {icon : string, color
 function TextButton({text, color = COLORS.text, onClick, ...props} : {text : string, color? : string, onClick : any}) {
   return (
     <button style={{color: color}} onClick={onClick}
-      className="bg-black p-3 "
+      className="p-2 border-b-2 border-b-black hover:border-b-accent duration-200"
     >
       <RegText text={text}/>
     </button>

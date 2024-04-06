@@ -1,9 +1,12 @@
 import React from 'react'
+import Listing from '../../components/listing/Listing'
 
-function index() {
+function Home() {
   return (
-    <div>index</div>
+    <div>
+      <Listing />
+    </div>
   )
 }
 
-export default index
+export default Home
