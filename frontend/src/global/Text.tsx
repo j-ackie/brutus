@@ -1,6 +1,7 @@
 import React from 'react'
+import { COLORS } from './Colors'
 
-function Label({text, color="#000000", ...props} : {text: string, color?: string}) {
+function Label({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
   return (
     <div style={{color: color, fontSize: '1rem'}} {...props}>
       {text}
@@ -8,7 +9,7 @@ function Label({text, color="#000000", ...props} : {text: string, color?: string
   )
 }
 
-function RegText({text, color="#000000", ...props} : {text: string, color?: string}) {
+function RegText({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
   return (
     <div style={{color: color, fontSize: '1rem'}} {...props}>
       {text}
@@ -16,7 +17,7 @@ function RegText({text, color="#000000", ...props} : {text: string, color?: stri
   )
 }
 
-function SubHeading({text, color="#000000", ...props} : {text: string, color?: string}) {
+function SubHeading({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
   return (
     <div style={{color: color, fontSize: '1.5rem'}} {...props}>
       {text}
@@ -24,7 +25,7 @@ function SubHeading({text, color="#000000", ...props} : {text: string, color?: s
   )
 }
 
-function Heading({text, color="#000000", ...props} : {text: string, color?: string}) {
+function Heading({text, color=COLORS.text, ...props} : {text: string, color?: string}) {
   return (
     <div style={{color: color, fontSize: '2rem'}} {...props}>
       {text}
