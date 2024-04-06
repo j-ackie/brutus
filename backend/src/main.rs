@@ -1,68 +1,73 @@
-use actix_web::http::StatusCode;
-use actix_web::{get, web, App, HttpRequest, HttpResponse, HttpServer, Responder, ResponseError};
+mod endpoints;
+mod error;
+
+use actix_web::{get, web, App, HttpRequest, HttpServer, Responder};
 use dotenv::dotenv;
-use serde::Serialize;
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
 
-const SCHEMA: &str = r#"
-CREATE TABLE IF NOT EXISTS User (
-    id integer PRIMARY KEY,
-    name text NOT NULL
-);
-"#;
+use crate::error::ApiError;
 
-#[derive(Serialize, Debug)]
-struct ApiError {
-    #[serde(skip_serializing)]
-    error_code: StatusCode,
-    message: String,
-}
+const TABLES: [&str; 4] = [
+    "CREATE TABLE IF NOT EXISTS users (
+    id TEXT PRIMARY KEY,
+    username TEXT,
+    email TEXT NOT NULL,
+    profile_picture_url TEXT
+);",
+    "CREATE TABLE IF NOT EXISTS class (
+    id INTEGER PRIMARY KEY,
+    class_name TEXT NOT NULL,
+    department TEXT NOT NULL
+);",
+    "
+CREATE TABLE IF NOT EXISTS want (
+    id INTEGER PRIMARY KEY,
+    type want_type NOT NULL,
+    class_id INTEGER REFERENCES class(id) 
+);",
+    "
+CREATE TABLE IF NOT EXISTS listing (
+    id SERIAL PRIMARY KEY,
+    poster_id TEXT NOT NULL REFERENCES users(id),
+    title TEXT NOT NULL,
+    description TEXT NOT NULL,
+    have_id INTEGER NOT NULL REFERENCES class(id),
+    want_id INTEGER NOT NULL REFERENCES want(id)
+);",
+];
 
-impl ApiError {
-    fn internal_error(message: impl std::fmt::Display) -> Self {
-        Self {
-            error_code: StatusCode::INTERNAL_SERVER_ERROR,
-            message: message.to_string(),
-        }
+// #[get("/hello/{name}")]
+// async fn greet(name: web::Path<String>) -> impl Responder {
+//     format!("Hello {name}!")
+// }
+
+// #[get("/")]
+// async fn index(req: HttpRequest) -> Result<String, ApiError> {
+//     // let pool = req
+//     //     .app_data::<PgPool>()
+//     //     .ok_or_else(|| ApiError::missing_pool_error())?;
+
+//     // let rows = sqlx::query!("SELECT (id) FROM testing")
+//     //     .fetch_all(pool)
+//     //     .await
+//     //     .map_err(|e| ApiError::internal_error(e.to_string()))?;
+
+//     // let mut out = String::new();
+
+//     // for row in rows {
+//     //     out.push_str(&format!("id: {}\n", row.id.unwrap()));
+//     // }
+
+//     // Ok(out)
+//     Ok(String::from("Hello world!"))
+// }
+
+async fn initialize_tables(pool: &PgPool) -> Result<(), sqlx::Error> {
+    for table in TABLES {
+        sqlx::query(table).execute(pool).await?;
     }
-}
-
-impl std::fmt::Display for ApiError {
-    fn fmt(&self, f: &mut std::fmt::Formatter) -> std::fmt::Result {
-        write!(f, "{}", self.message)
-    }
-}
-
-impl ResponseError for ApiError {
-    fn error_response(&self) -> HttpResponse {
-        HttpResponse::build(self.error_code).json(self) // Serialize self as JSON for the error response body
-    }
-}
-
-#[get("/hello/{name}")]
-async fn greet(name: web::Path<String>) -> impl Responder {
-    format!("Hello {name}!")
-}
-
-#[get("/")]
-async fn index(req: HttpRequest) -> Result<String, ApiError> {
-    let pool = req
-        .app_data::<PgPool>()
-        .ok_or_else(|| ApiError::internal_error("No pool found"))?;
-
-    let rows = sqlx::query!("SELECT (id) FROM testing")
-        .fetch_all(pool)
-        .await
-        .map_err(|e| ApiError::internal_error(e.to_string()))?;
-
-    let mut out = String::new();
-
-    for row in rows {
-        out.push_str(&format!("id: {}\n", row.id.unwrap()));
-    }
-
-    Ok(out)
+    Ok(())
 }
 
 #[actix_web::main]
@@ -77,18 +82,23 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create pool");
 
-    sqlx::query(SCHEMA)
-        .execute(&pool)
+    initialize_tables(&pool)
         .await
-        .expect("Failed to initialize database schema");
+        .expect("Failed to initialize tables");
 
     HttpServer::new(move || {
         App::new()
             .app_data(pool.clone())
-            .service(greet)
-            .service(index)
+            // .service(greet)
+            // .service(index)
+            .service(endpoints::api::get_listing)
+            .service(endpoints::api::create_listing)
+            .service(endpoints::oauth::redirect)
+            .service(endpoints::oauth::callback)
     })
-    .bind(("127.0.0.1", 8080))?
+    .bind("127.0.0.1:8080")?
+    .bind("[::1]:8080")?
+    // .bind("[::1]:8080")?
     .run()
     .await
 }
