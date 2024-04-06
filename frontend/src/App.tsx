@@ -1,9 +1,5 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import { IconButton, TextButton } from './global/Buttons';
-import Listing from './components/listing/Listing';
-import { BrowserRouter, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Home from './pages/home';
 
 const listingProps = {
