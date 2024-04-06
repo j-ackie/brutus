@@ -32,4 +32,4 @@ function Heading({text, color, ...props} : {text: string, color: string}) {
   )
 }
 
-export { Label, RegText, SubHeading, Heading}
+export { Label, RegText, SubHeading, Heading }
