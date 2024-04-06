@@ -1,9 +1,9 @@
-import React from 'react'
+import React, { ReactNode } from 'react'
 
-function IconButton() {
+function IconButton({icon, color, children, ...props} : {icon : string, color : string, children : ReactNode}) {
   return (
-    <div>
-      IconButton
+    <div style={{color: color}} {...props}>
+      {children}
     </div>
   )
 }
