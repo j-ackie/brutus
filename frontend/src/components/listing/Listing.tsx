@@ -43,15 +43,15 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
       borderRadius: '10px',
       margin: '20px auto',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-      backgroundColor: COLORS.secondary, 
+      backgroundColor: COLORS.lightaccent, 
       color: '#FFF', 
       position: 'relative',
     }}>
       <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', fontSize: '0.8em', justifyContent: 'flex-start' }}>
-        <SubHeading text={`@${user}`} color={COLORS.accent} /> 
+        <SubHeading text={`@${user}`} color={COLORS.primary} /> 
         <span style={{ margin: '0 5px', color: COLORS.accent }}>&middot;</span>
         <div style={{
-          backgroundColor: '#dc3545',
+          backgroundColor: COLORS.red,
           borderRadius: '20px',
           padding: '2px 6px',
           color: 'white',
@@ -61,7 +61,7 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
         </div>
         <span style={{ margin: '0 5px', color: COLORS.accent }}>&middot;</span>
         <div style={{
-          backgroundColor: '#28a745',
+          backgroundColor: COLORS.green,
           borderRadius: '20px',
           padding: '2px 6px',
           color: 'white',
@@ -78,7 +78,7 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
         {tags.map(tag => (
           <div key={tag} style={{
-            backgroundColor: COLORS.primary, 
+            backgroundColor: COLORS.accent, 
             borderRadius: '20px',
             padding: '2px 10px',
             color: 'black', 
