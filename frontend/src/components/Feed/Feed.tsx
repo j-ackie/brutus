@@ -41,11 +41,9 @@ function Feed({
     ? fuse.search(searchTerm).map((item: any) => item.item)
     : listings;
 
-  // After initial search, filter by selectedTags if any
   if (selectedTags && selectedTags.length > 0) {
     searchResults = searchResults.filter((listing) =>
-      // Ensure at least one of the selectedTags is present in the listing's tags
-      listing.tags.some((tag) => selectedTags.includes(tag))
+      selectedTags.every((tag) => listing.tags.includes(tag))
     );
   }
 
