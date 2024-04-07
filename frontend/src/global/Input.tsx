@@ -17,7 +17,7 @@ function Input({type, value, name, placeholder, className, ...props} : InputProp
       name={name}
       placeholder={placeholder}
       {...props}
-      className={className + " p-2 outline-none border-b-2 focus:border-b-accent text-text"}
+      className={className + " p-2 outline-none border-b-2 focus:border-b-accent text-text bg-transparent"}
     />
   )
 }

@@ -73,31 +73,31 @@ function trendingQuery() {
       id: 0,
       name: "CS217",
       wants: 45,
-      gives: 30
+      gives: 45
     },
     {
       id: 0,
       name: "CS214",
       wants: 35,
-      gives: 30
+      gives: 20
     },
     {
       id: 0,
       name: "CS213",
       wants: 40,
-      gives: 30
+      gives: 10
     },
     {
       id: 0,
       name: "CS212",
       wants: 23,
-      gives: 30
+      gives: 5
     },
     {
       id: 0,
       name: "CS211",
       wants: 4,
-      gives: 30
+      gives: 67
     }
   ]
 

@@ -34,7 +34,19 @@ function Trending() {
           color: "white"
         },
         position: 'top' as const,
-      }
+      },
+      tooltip: {
+        callbacks: {
+            label: function(tooltipItem : any) {
+                // Get the absolute (positive) value of the data point
+                console.log(tooltipItem)
+                const value = Math.abs(tooltipItem.raw);
+
+                // Construct the tooltip label to display the positive value
+                return `${tooltipItem.dataset.label}: ${value}`;
+              }
+          }
+      },
     },
     scales: {
       y: {
@@ -59,13 +71,13 @@ function Trending() {
     datasets: [
       {
         label: 'Desired',
-        data: queryData.map((element) => element.wants),
-        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+        data: queryData.map((element) => -1 * element.wants),
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
       },
       {
-        label: 'Dropped',
-        data: queryData.map((element) => -1 * element.gives),
-        backgroundColor: 'rgba(255, 0, 0, 0.5)',
+        label: 'Offered',
+        data: queryData.map((element) => element.gives),
+        backgroundColor: 'rgba(0, 255, 0, 0.5)',
       }
     ],
   };
