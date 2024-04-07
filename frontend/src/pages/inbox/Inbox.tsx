@@ -3,6 +3,7 @@ import { COLORS } from '../../global/Colors'
 import { chatsQuery } from './messageQueries';
 import ChatCard from './components/ChatCard';
 import ChatDisplay from './components/ChatDisplay';
+import { RegText } from '../../global/Text';
 
 function Inbox() {
 
@@ -29,7 +30,7 @@ function Inbox() {
       </div>
 
       <div className='flex-1'>
-        <ChatDisplay id={chats[selected].chatid}/>
+        {selected == -1 ? <RegText text='Select a chat...'/> : <ChatDisplay id={chats[selected].chatid}/>}
       </div>
     </div>
   )
