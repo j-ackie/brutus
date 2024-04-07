@@ -35,7 +35,7 @@ function BottomBar() {
   ]
 
   return (
-    <div className="w-full p-4 bg-slate-400 flex flex-row justify-around">
+    <div className="w-full p-4 bg-primary-400 flex flex-row justify-around">
       {
         routes.map(route => {
           return (

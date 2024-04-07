@@ -7,6 +7,7 @@ import {
   Title,
   Tooltip,
   Legend,
+  Colors,
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { trendingQuery } from '../../pages/home/homeQueries';
@@ -21,16 +22,32 @@ function Trending() {
     BarElement,
     Title,
     Tooltip,
-    Legend
+    Legend,
+    Colors
   );
   
   const options = {
     responsive: true,
     plugins: {
       legend: {
+        labels: {
+          color: "white"
+        },
         position: 'top' as const,
       }
     },
+    scales: {
+      y: {
+        ticks: {
+          color: "white"
+        }
+      },
+      x: {
+        ticks: {
+          color: "white"
+        }
+      }
+    }
   };
   
   const labels = queryData.map((element) => element.name);
@@ -39,9 +56,10 @@ function Trending() {
     labels,
     datasets: [
       {
-        label: 'Most desired class',
+        label: 'Desired',
         data: queryData.map((element) => element.wants),
-        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        color: "white"
       }
     ],
   };

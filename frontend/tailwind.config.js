@@ -4,19 +4,30 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'text': '#050315',
-        'background': '#fbfbfe',
-        'primary': '#311fd8',
-        'secondary': '#e30544',
-        'accent': '#e74683',
-        'snow': "#f8f0f0",
-        'lightcoral': "#ff8080",
-        'paradisepink': "#ed3d63",
-        'darkorchid': "#8d3fd0",
-        'denimblue': "#2c44c7",
-        'royalblue': "#161a58",
-        'black': "#000000",
-        'royalred': "#9B1C31",
+          // white
+          'text': "#f8f0f0",
+          // black
+          'black': "#000000",
+          // royal blue
+          'primary': "#161a58",
+          // dark orchid
+          'secondary': "#8d3fd0",
+          // light coral
+          'tertiary': "#ff8080",
+          // denim blue
+          'accent': "#2c44c7",
+          // royal red
+          'accent2': "#9B1C31",
+          // paradise pink
+          'accent3': "#ed3d63",
+          // light blue
+          'lightblue': '#a9c8ff', 
+          // red button
+          'red': "#dc3545",
+          // green button
+          'green': "#28a745",
+          // date gray
+          'date': "#6c757d",
       },
     },
   },
