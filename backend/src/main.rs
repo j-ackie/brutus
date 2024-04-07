@@ -1,6 +1,7 @@
 mod endpoints;
 mod error;
 
+use actix_cors::Cors;
 use actix_web::dev::ServiceRequest;
 use actix_web::error::ErrorInternalServerError;
 use actix_web::{get, web, App, Error, HttpMessage, HttpRequest, HttpServer, Responder};
@@ -98,6 +99,7 @@ async fn main() -> std::io::Result<()> {
 
         App::new()
             .app_data(pool.clone())
+            .wrap(Cors::permissive())
             .route(
                 "/listings/{id}",
                 web::get().to(endpoints::api::listing::get_listing),
