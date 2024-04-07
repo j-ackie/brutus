@@ -22,12 +22,15 @@ export function Feed() {
   // map over the listings outputted by listingquery and return a listing component for each
   return (
     <div>
-      {listingQuery().map((listing) => (
-        <Listing {...listing} />
-      ))}
+      {listingQuery()
+        .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
+        .map((listing, index) => (
+          <Listing key={index} {...listing} />
+        ))}
     </div>
   );
 }
+
 
 export default Feed;
 
