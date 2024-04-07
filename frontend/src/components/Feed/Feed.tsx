@@ -21,7 +21,7 @@ export function Feed() {
 
   // map over the listings outputted by listingquery and return a listing component for each
   return (
-    <div>
+    <div className="overflow-y-scroll">
       {listingQuery()
         .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
         .map((listing, index) => (

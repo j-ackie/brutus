@@ -1,6 +1,6 @@
 import React, { ReactNode } from 'react'
 import { COLORS } from './Colors'
-import { RegText } from './Text'
+import { RegText, SubHeading } from './Text'
 
 type IconProps = {
   color: string,
@@ -26,11 +26,13 @@ function IconButton({color, onClick, children, ...props} : IconProps) {
 }
 
 function TextButton({text, color = COLORS.text, onClick, ...props} : TextButtonProps) {
+  let stylename = "p-2 border-b-2 border-b-black hover:border-b-accent duration-200"
+  if (props.className) stylename += " " + props.className
   return (
     <button style={{color: color}} onClick={onClick}
-      className="p-2 border-b-2 border-b-black hover:border-b-accent duration-200"
+      className={stylename}
     >
-      <RegText text={text}/>
+      <SubHeading text={text}/>
     </button>
   )
 }
