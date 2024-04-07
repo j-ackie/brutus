@@ -57,7 +57,7 @@ CREATE TABLE IF NOT EXISTS message
      content    TEXT NOT NULL,
      chat_id    INTEGER NOT NULL REFERENCES chat(id) ON DELETE CASCADE,
      sender_id  TEXT NOT NULL REFERENCES users(id),
-     READ       BOOLEAN NOT NULL DEFAULT false,
+     read       BOOLEAN NOT NULL DEFAULT false,
      created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
   ); 
 

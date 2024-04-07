@@ -70,6 +70,20 @@ function chatsQuery(): ChatType[] {
       pfp: "https://m.media-amazon.com/images/I/71k6sXMGGvL._AC_UF1000,1000_QL80_.jpg",
       have: false,
     },
+    {
+      chatid: 1,
+      user1: "joe",
+      user2: "bob",
+      pfp: "https://m.media-amazon.com/images/I/71k6sXMGGvL._AC_UF1000,1000_QL80_.jpg",
+      have: false,
+    },
+    {
+      chatid: 1,
+      user1: "joe",
+      user2: "bob",
+      pfp: "https://m.media-amazon.com/images/I/71k6sXMGGvL._AC_UF1000,1000_QL80_.jpg",
+      have: false,
+    },
   ];
 
   return mockData;
@@ -102,6 +116,52 @@ function getMessagesFromChatId(id: number): MessageType[] {
       name: "john",
       message: "it is joever",
     },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever",
+    },
+    
   ];
 
   return mockData;

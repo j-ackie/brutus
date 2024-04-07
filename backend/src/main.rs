@@ -4,7 +4,6 @@ mod websocket;
 
 use actix::Actor;
 use actix_cors::Cors;
-use actix_files::NamedFile;
 use actix_web::dev::ServiceRequest;
 use actix_web::error::ErrorInternalServerError;
 use actix_web::web::Data;
@@ -15,16 +14,25 @@ use actix_web_httpauth::middleware::HttpAuthentication;
 use dotenv::dotenv;
 use endpoints::oauth::Claim;
 use jsonwebtoken::{decode, DecodingKey, Validation};
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::postgres::PgPoolOptions;
 use std::env;
 
 async fn validator(
     req: ServiceRequest,
-    credentials: BearerAuth,
+    _: BearerAuth,
 ) -> Result<ServiceRequest, (Error, ServiceRequest)> {
     let secret_key = env::var("JWT_SECRET_KEY").expect("JWT_SECRET_KEY must be set");
+    let token = if let Some(token) = req.cookie("token") {
+        token
+    } else {
+        return Err((
+            ErrorInternalServerError("No token provided".to_string()),
+            req,
+        ));
+    };
+
     let token_message = decode::<Claim>(
-        credentials.token(),
+        token.value(),
         &DecodingKey::from_secret(secret_key.as_ref()),
         &Validation::new(jsonwebtoken::Algorithm::HS256),
     );
@@ -38,9 +46,8 @@ async fn validator(
     Ok(req)
 }
 
-#[actix_web::get("/")]
 async fn index() -> impl Responder {
-    NamedFile::open_async("./e.html").await.unwrap()
+    actix_files::NamedFile::open("./build/index.html")
 }
 
 #[actix_web::main]
@@ -55,12 +62,6 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create pool");
 
-    sqlx::migrate!()
-        .run(&pool)
-        .await
-        .expect("Failed to run DB migrations");
-
-    println!("starting websocket chat server");
     let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
 
     HttpServer::new(move || {
@@ -110,6 +111,8 @@ async fn main() -> std::io::Result<()> {
             .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))
             .route("/oauth/callback", web::get().to(endpoints::oauth::callback))
             .service(websocket::ws_route)
+            .service(actix_files::Files::new("/static", "./build/static").show_files_listing())
+            .default_service(web::route().to(index))
     })
     .workers(2)
     .bind("127.0.0.1:8080")?
