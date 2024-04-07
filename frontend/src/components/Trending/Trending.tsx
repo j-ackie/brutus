@@ -11,10 +11,15 @@ import {
 } from 'chart.js';
 import { Bar } from 'react-chartjs-2';
 import { trendingQuery } from '../../pages/home/homeQueries';
+import { useQuery } from 'react-query';
 
 function Trending() {
 
-  const queryData = trendingQuery()
+  const {data: trendingData, isLoading, isError} = useQuery("trending", trendingQuery);
+
+  console.log(trendingData);
+
+  const queryData = trendingData
 
   ChartJS.register(
     CategoryScale,

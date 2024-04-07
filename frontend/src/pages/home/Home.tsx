@@ -3,6 +3,7 @@ import { TextButton } from '../../global/Buttons'
 import Feed from '../../components/Feed/Feed'
 import { useState } from 'react'
 import Trending from '../../components/Trending/Trending'
+import { useQuery } from 'react-query'
 
 const TAB_STATE_ENUM = {
   RECENTS: 0,

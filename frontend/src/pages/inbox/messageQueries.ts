@@ -12,8 +12,10 @@ type MessageType = {
   message: string
 }
 
+import { useQuery } from "react-query"
 
 function chatsQuery() : ChatType[] {
+
   const mockData = [
     {
       chatid: 1,
