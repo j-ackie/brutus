@@ -3,7 +3,7 @@ use crate::{
     error::{ApiError, ApiResult},
 };
 
-use actix_web::{get, put, web, HttpMessage, HttpRequest, HttpResponse};
+use actix_web::{web, HttpMessage, HttpRequest, HttpResponse};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -43,13 +43,21 @@ pub async fn update_user(
     path: web::Path<String>,
     body: web::Json<UpdateUserRequest>,
 ) -> ApiResult<HttpResponse> {
+    let extensions = req.extensions();
+
+    let claim = extensions
+        .get::<Claim>()
+        .ok_or_else(ApiError::unauthorized)?;
+
+    let user_id = path.into_inner();
+
+    if user_id != claim.sub {
+        return Err(ApiError::unauthorized());
+    }
+
     let pool = req
         .app_data::<PgPool>()
         .ok_or_else(ApiError::missing_pool_error)?;
-
-    println!("{}", req.extensions().get::<Claim>().unwrap());
-
-    let user_id = path.into_inner();
 
     let mut params = Vec::new();
 

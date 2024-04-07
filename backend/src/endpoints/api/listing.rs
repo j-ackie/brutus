@@ -1,6 +1,9 @@
-use crate::error::{ApiError, ApiResult};
+use crate::{
+    endpoints::oauth::Claim,
+    error::{ApiError, ApiResult},
+};
 
-use actix_web::{get, post, web, HttpRequest, HttpResponse};
+use actix_web::{web, HttpMessage, HttpRequest, HttpResponse};
 use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
@@ -44,9 +47,11 @@ pub async fn create_listing(
     req: HttpRequest,
     body: web::Json<CreateListingRequest>,
 ) -> ApiResult<HttpResponse> {
-    let pool = req
-        .app_data::<PgPool>()
-        .ok_or_else(ApiError::missing_pool_error)?;
+    let extensions = req.extensions();
+
+    let claim = extensions
+        .get::<Claim>()
+        .ok_or_else(ApiError::unauthorized)?;
 
     let CreateListingRequest {
         poster_id,
@@ -55,6 +60,14 @@ pub async fn create_listing(
         have_id,
         want_id,
     } = body.into_inner();
+
+    if poster_id != claim.sub {
+        return Err(ApiError::unauthorized());
+    }
+
+    let pool = req
+        .app_data::<PgPool>()
+        .ok_or_else(ApiError::missing_pool_error)?;
 
     let result = sqlx::query_as!(
         Listing,

@@ -67,9 +67,9 @@ pub async fn redirect() -> ApiResult<HttpResponse> {
 
 #[derive(Serialize, Deserialize)]
 pub struct Claim {
-    sub: String,
-    exp: usize,
-    email: String,
+    pub sub: String,
+    pub exp: usize,
+    pub email: String,
 }
 
 impl fmt::Display for Claim {

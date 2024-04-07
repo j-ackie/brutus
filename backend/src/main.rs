@@ -14,7 +14,7 @@ use std::env;
 use crate::endpoints::oauth::Claim;
 use crate::error::ApiError;
 
-const TABLES: [&str; 4] = [
+const TABLES: [&str; 5] = [
     "CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
     username TEXT,
@@ -22,16 +22,23 @@ const TABLES: [&str; 4] = [
     profile_picture_url TEXT
 );",
     "CREATE TABLE IF NOT EXISTS class (
-    id INTEGER PRIMARY KEY,
+    id SERIAL PRIMARY KEY,
     class_name TEXT NOT NULL,
     department TEXT NOT NULL
 );",
     "
-CREATE TABLE IF NOT EXISTS want (
-    id INTEGER PRIMARY KEY,
-    type want_type NOT NULL,
-    class_id INTEGER REFERENCES class(id) 
-);",
+    CREATE TABLE IF NOT EXISTS want (
+        id SERIAL PRIMARY KEY,
+        type want_type NOT NULL,
+        class_id INTEGER REFERENCES class(id) NOT NULL,
+        user_id TEXT REFERENCES users(id) NOT NULL
+    );",
+    "CREATE TABLE IF NOT EXISTS drop (
+        id SERIAL PRIMARY KEY,
+        class_id INTEGER REFERENCES class(id) NOT NULL,
+        user_id TEXT REFERENCES users(id) NOT NULL
+    );
+",
     "
 CREATE TABLE IF NOT EXISTS listing (
     id SERIAL PRIMARY KEY,
@@ -106,6 +113,22 @@ async fn main() -> std::io::Result<()> {
                 "/users/{id}",
                 web::put()
                     .to(endpoints::api::user::update_user)
+                    .wrap(auth.clone()),
+            )
+            .route(
+                "/trending",
+                web::get().to(endpoints::api::trending::get_trending),
+            )
+            .route(
+                "/want",
+                web::post()
+                    .to(endpoints::api::want::create_want)
+                    .wrap(auth.clone()),
+            )
+            .route(
+                "/drop",
+                web::post()
+                    .to(endpoints::api::drop::create_drop)
                     .wrap(auth.clone()),
             )
             .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))

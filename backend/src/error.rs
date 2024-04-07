@@ -38,6 +38,13 @@ impl ApiError {
     pub fn missing_pool_error() -> Self {
         Self::internal_error("No pool found")
     }
+
+    pub fn unauthorized() -> Self {
+        Self {
+            error_code: StatusCode::UNAUTHORIZED,
+            message: "Missing credentials".to_string(),
+        }
+    }
 }
 
 impl std::fmt::Display for ApiError {
