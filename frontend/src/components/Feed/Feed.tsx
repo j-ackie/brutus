@@ -13,12 +13,17 @@ interface ListingItem {
   created_at: string;
 }
 
-// Function to generate unique ID
 function generateId(): string {
   return Math.random().toString(36).slice(2, 9);
 }
 
-function Feed({ searchTerm = "" }: { searchTerm: string }) {
+function Feed({
+  searchTerm = "",
+  selectedTags = [],
+}: {
+  searchTerm: string;
+  selectedTags?: string[];
+}) {
   const listings = listingQuery();
   listings.sort(
     (a, b) =>
@@ -26,21 +31,33 @@ function Feed({ searchTerm = "" }: { searchTerm: string }) {
   );
 
   const fuseOptions = {
-    keys: ["description", "user", "tags", "have", "want"],
+    keys: ["description", "user", "have", "want"],
     threshold: 0.4,
   };
 
   const fuse = new Fuse(listings, fuseOptions);
 
-  const searchResults: ListingItem[] = searchTerm
-    ? fuse
-        .search(searchTerm)
-        .map((item: any) => ({ ...item.item, id: generateId() }))
-    : listings.map((item: any) => ({ ...item, id: generateId() }));
+  let searchResults: ListingItem[] = searchTerm
+    ? fuse.search(searchTerm).map((item: any) => item.item)
+    : listings;
+
+  // After initial search, filter by selectedTags if any
+  if (selectedTags && selectedTags.length > 0) {
+    searchResults = searchResults.filter((listing) =>
+      // Ensure at least one of the selectedTags is present in the listing's tags
+      listing.tags.some((tag) => selectedTags.includes(tag))
+    );
+  }
+
+  // Generate a unique ID for each listing result to ensure React keys are unique
+  searchResults = searchResults.map((listing) => ({
+    ...listing,
+    id: generateId(),
+  }));
 
   return (
     <div className="overflow-y-scroll pb-20">
-      {searchResults.map((result, index) => (
+      {searchResults.map((result) => (
         <Listing key={result.id} {...result} />
       ))}
     </div>
