@@ -18,55 +18,6 @@ use jsonwebtoken::{decode, DecodingKey, Validation};
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
 
-const TABLES: [&str; 7] = [
-    "CREATE TABLE IF NOT EXISTS users (
-        id TEXT PRIMARY KEY,
-        username TEXT,
-        email TEXT NOT NULL,
-        profile_picture_url TEXT
-    );",
-    "CREATE TABLE IF NOT EXISTS class (
-    id SERIAL PRIMARY KEY,
-    class_name TEXT NOT NULL,
-    department TEXT NOT NULL
-);",
-    "
-    CREATE TABLE IF NOT EXISTS want (
-        id SERIAL PRIMARY KEY,
-        type want_type NOT NULL,
-        class_id INTEGER REFERENCES class(id) NOT NULL,
-        user_id TEXT REFERENCES users(id) NOT NULL
-    );",
-    "CREATE TABLE IF NOT EXISTS drop (
-        id SERIAL PRIMARY KEY,
-        class_id INTEGER REFERENCES class(id) NOT NULL,
-        user_id TEXT REFERENCES users(id) NOT NULL
-    );
-",
-    "
-CREATE TABLE IF NOT EXISTS listing (
-    id SERIAL PRIMARY KEY,
-    poster_id TEXT NOT NULL REFERENCES users(id),
-    title TEXT NOT NULL,
-    description TEXT NOT NULL,
-    have_id INTEGER NOT NULL REFERENCES class(id),
-    want_id INTEGER NOT NULL REFERENCES want(id)
-);",
-    "CREATE TABLE IF NOT EXISTS chat (
-        id SERIAL PRIMARY KEY,
-        listing_id INTEGER NOT NULL REFERENCES listing(id) ON DELETE CASCADE,
-        other_party_id TEXT NOT NULL REFERENCES users(id)
-    );",
-    "CREATE TABLE IF NOT EXISTS message (
-        id SERIAL PRIMARY KEY,
-        content TEXT NOT NULL,
-        chat_id INTEGER NOT NULL REFERENCES chat(id) ON DELETE CASCADE,
-        sender_id TEXT NOT NULL REFERENCES users(id),
-        read BOOLEAN NOT NULL DEFAULT FALSE,
-        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
-    );",
-];
-
 async fn validator(
     req: ServiceRequest,
     credentials: BearerAuth,
@@ -85,13 +36,6 @@ async fn validator(
     let claim = token_message.unwrap().claims;
     req.extensions_mut().insert(claim);
     Ok(req)
-}
-
-async fn initialize_tables(pool: &PgPool) -> Result<(), sqlx::Error> {
-    for table in TABLES {
-        sqlx::query(table).execute(pool).await?;
-    }
-    Ok(())
 }
 
 #[actix_web::get("/")]
@@ -115,10 +59,6 @@ async fn main() -> std::io::Result<()> {
         .run(&pool)
         .await
         .expect("Failed to run DB migrations");
-
-    initialize_tables(&pool)
-        .await
-        .expect("Failed to initialize tables");
 
     println!("starting websocket chat server");
     let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
