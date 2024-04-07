@@ -10,7 +10,16 @@ function listingQuery(){
     created_at: new Date().toLocaleDateString(),
   };
 
-  return listingProps
+  const listingProps2 = {
+    user: "JohnDoe42",
+    description: "Need 400 level electives",
+    have: "PHIL 400",
+    want: "CS 410, CS 449, CS 445, CS 443",
+    tags: ["CS", "Electives", "400+"],
+    created_at: "2024-04-06T15:30:00-04:00",
+  };
+
+  return [listingProps, listingProps2]
 }
 
 export { listingQuery }
