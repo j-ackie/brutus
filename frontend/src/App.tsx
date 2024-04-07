@@ -1,18 +1,9 @@
 import './App.css';
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
-import Home from './pages/home';
-import Search from './pages/search';
+import Home from './pages/home/Home';
+import Search from './pages/search/Search';
 import BottomBar from './components/BottomBar/BottomBar';
-
-const listingProps = {
-  user: "JaneDoe42",
-  description: "Need 300 level electives",
-  have: "PHIL 300",
-  want: "CS 310, CS 349, CS 345, CS 343",
-  tags: ["CS", "Electives", "300+"],
-  created_at: new Date().toLocaleDateString(),
-};
-
+import CreateListing from './pages/create/Create';
 function App() {
   return (
     <div className='flex flex-col h-screen'>
@@ -21,6 +12,7 @@ function App() {
           <Routes>
             <Route path='/' element={<Home />}/>
             <Route path='/search' element={<Search />}/>
+            <Route path="/create-listing" element={<CreateListing />} />  
           </Routes>
         </div>
         <BottomBar />

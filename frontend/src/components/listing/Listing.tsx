@@ -1,5 +1,6 @@
 import React from 'react';
 import { Label, RegText, SubHeading, Heading } from "../../global/Text";
+import { COLORS } from '../../global/Colors';
 
 interface ListingProps {
   user: string;
@@ -38,29 +39,28 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
       flexDirection: 'column',
       maxWidth: '600px',
       padding: '20px',
-      border: '1px solid #e1e8ed', 
-      borderRadius: '10px',
-      margin: '20px auto',
+      borderRadius: '20px',
+      margin: '3px auto',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-      backgroundColor: ' #111111', 
+      backgroundColor: COLORS.text, 
       color: '#FFF', 
       position: 'relative',
     }}>
       <div style={{ marginBottom: '10px', display: 'flex', alignItems: 'center', fontSize: '0.8em', justifyContent: 'flex-start' }}>
-        <SubHeading text={`@${user}`} color="#b19cd9" /> 
-        <span style={{ margin: '0 5px', color: '#FFF' }}>&middot;</span>
+        <SubHeading text={`@${user}`} color={COLORS.primary} /> 
+        <span style={{ margin: '0 5px', color: COLORS.accent }}>&middot;</span>
         <div style={{
-          backgroundColor: '#dc3545',
+          backgroundColor: COLORS.red,
           borderRadius: '20px',
           padding: '2px 6px',
           color: 'white',
           display: 'inline-block',
         }}>
-          <Label text={`- ${have}`} color="#ffffff"/>
+          <Label text={`- ${have}`} color="#FFF"/>
         </div>
-        <span style={{ margin: '0 5px', color: '#FFF' }}>&middot;</span>
+        <span style={{ margin: '0 5px', color: COLORS.accent }}>&middot;</span>
         <div style={{
-          backgroundColor: '#28a745',
+          backgroundColor: COLORS.green,
           borderRadius: '20px',
           padding: '2px 6px',
           color: 'white',
@@ -68,21 +68,21 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
         }}>
           <Label text={`+ ${want}`} color="#ffffff"/>
         </div>
-        <span style={{ margin: '0 5px', color: '#FFF' }}>&middot;</span>
+        <span style={{ margin: '0 5px', color: COLORS.accent }}>&middot;</span>
         <RegText text={timeAgo} color="#657786"/>
       </div>
       <div style={{ textAlign: 'left', marginBottom: '10px' }}>
-        <RegText text={description} color="#FFF"/>
+        <RegText text={description} color={COLORS.black}/>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
         {tags.map(tag => (
           <div key={tag} style={{
-            backgroundColor: '#ffeb3b', 
+            backgroundColor: COLORS.accent, 
             borderRadius: '20px',
             padding: '2px 10px',
             color: 'black', 
           }}>
-            <Label text={`#${tag}`} color="#000"/>
+            <Label text={`#${tag}`} color={COLORS.text}/>
           </div>
         ))}
       </div>
