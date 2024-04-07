@@ -1,11 +1,9 @@
 import React from "react";
 import { COLORS } from "../../global/Colors";
-import { Heading, SubHeading } from "../../global/Text";
+import { SubHeading } from "../../global/Text";
 import GOOGLE from "../../assets/Google__G__logo.svg.png";
-import { useNavigate } from "react-router-dom";
 
 function Login() {
-  const navigate = useNavigate();
   return (
     <div
       className="flex flex-col items-center justify-center h-screen pt-4"
@@ -16,7 +14,7 @@ function Login() {
         <button
           className="border rounded-xl p-4 flex flex-row items-center hover:shadow-md duration-200"
           onClick={() => {
-            navigate("/oauth/redirect");
+            window.location.href = "http://localhost:8080/oauth/redirect";
           }}>
           <img src={GOOGLE} className="h-8 w-8 mr-2" />
           <SubHeading text="Login with Google..." color={COLORS.black} />
