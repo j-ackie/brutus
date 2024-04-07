@@ -67,4 +67,41 @@ function listingQuery(){
   return [listingProps, listingProps2, listingProps3, listingProps4, listingProps5, listingProps6, listingProps7]
 }
 
-export { listingQuery }
+function trendingQuery() {
+  const mockData = [
+    {
+      id: 0,
+      name: "CS217",
+      wants: 45,
+      gives: 30
+    },
+    {
+      id: 0,
+      name: "CS214",
+      wants: 35,
+      gives: 30
+    },
+    {
+      id: 0,
+      name: "CS213",
+      wants: 40,
+      gives: 30
+    },
+    {
+      id: 0,
+      name: "CS212",
+      wants: 23,
+      gives: 30
+    },
+    {
+      id: 0,
+      name: "CS211",
+      wants: 4,
+      gives: 30
+    }
+  ]
+
+  return mockData
+}
+
+export { listingQuery, trendingQuery }

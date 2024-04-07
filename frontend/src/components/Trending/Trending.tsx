@@ -1,8 +1,55 @@
-import React from 'react'
+import React from 'react';
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import { Bar } from 'react-chartjs-2';
+import { trendingQuery } from '../../pages/home/homeQueries';
 
 function Trending() {
+
+  const queryData = trendingQuery()
+
+  ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+  );
+  
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top' as const,
+      }
+    },
+  };
+  
+  const labels = queryData.map((element) => element.name);
+  
+  const data = {
+    labels,
+    datasets: [
+      {
+        label: 'Most desired class',
+        data: queryData.map((element) => element.wants),
+        backgroundColor: 'rgba(255, 99, 132, 0.5)',
+      }
+    ],
+  };
+
   return (
-    <div>Trending</div>
+    <div className='flex justify-center items-center w-3/5 text-text'>
+      <Bar options={options} data={data}/>
+    </div>
   )
 }
 
