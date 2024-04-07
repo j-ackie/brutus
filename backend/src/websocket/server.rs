@@ -60,15 +60,20 @@ impl Handler<ChatMessageToServer> for ChatServer {
             }
         }
 
-        // let pool = self.pool.clone();
+        let pool = self.pool.clone();
         async move {
-            // let result = chat_repository::insert_chat_message(
-            //     msg.sender_id,
-            //     msg.chat_id,
-            //     &msg.content,
-            //     pool.as_ref(),
-            // )
-            // .await;
+            sqlx::query!(
+                r#"
+                INSERT INTO message (content, chat_id, sender_id)
+                VALUES ($1, $2, $3)
+                "#,
+                msg.content,
+                msg.chat_id,
+                msg.sender_id,
+            )
+            .execute(pool.as_ref())
+            .await
+            .unwrap();
 
             // match result {
             //     Ok(_) => {
@@ -187,10 +192,8 @@ impl Handler<Join> for ChatServer {
     fn handle(&mut self, msg: Join, _: &mut Self::Context) -> Self::Result {
         let pool = self.pool.clone();
 
-        // let rooms = self.rooms.clone();
         let sessions = self.sessions.clone();
 
-        // do something async
         Box::pin(async move {
             let record = sqlx::query!(
                 r#"
@@ -205,8 +208,6 @@ impl Handler<Join> for ChatServer {
             )
             .fetch_one(pool.as_ref())
             .await;
-
-            println!("got record with {record:?}");
 
             let is_part_of_chat_group = match record {
                 Err(sqlx::Error::RowNotFound) => Ok(None),
