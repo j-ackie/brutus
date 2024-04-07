@@ -14,35 +14,12 @@ const CreateListing = () => {
   const [tags, setTags] = useState<string[]>([]);
 
   const categories = [
-    'Core',
-    'Theory',
-    'Interfaces',
-    'Programming Languages',
-    'Systems',
-    'Projects',
-    'Electives',
-    'Math',
-    'Other',
-    '200+',
-    '300+',
-    '400+',
-    'Web-Dev',
-    'App-Dev',
-    'Machine Learning',
-    'AI',
-    'Cybersecurity',
-    'Networking',
-    'Databases',
+    'Core', 'Theory', 'Interfaces', 'Programming Languages', 'Systems', 'Projects',
+    'Electives', 'Math', 'Other', '200+', '300+', '400+', 'Web-Dev', 'App-Dev',
+    'Machine Learning', 'AI', 'Cybersecurity', 'Networking', 'Databases',
   ];
 
-  const classes = [
-    'CS 110',
-    'CS 211',
-    'CS 340',
-    'CS 343',
-    'CS 371',
-    'CS 371',
-  ]
+  const classes = ['CS 110', 'CS 211', 'CS 340', 'CS 343', 'CS 371'];
 
   const handleCreateListing = () => {
     console.log('Creating listing:', { user, description, have, want, tags });
@@ -53,7 +30,7 @@ const CreateListing = () => {
       background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.accent2})`
     }}>
       <div className="w-full max-w-md px-4 mb-4"> 
-        <Heading text="Description: " color={COLORS.text} />
+        <label className="text-lg font-medium text-white">Description:</label>
         <Input 
           type="text"
           value={description}
@@ -65,16 +42,17 @@ const CreateListing = () => {
       </div>
 
       <div className="w-full max-w-md px-4 mb-4">
-        <Heading text="What types of classes are you looking for?" color={COLORS.text} />
+        <label className="text-lg font-medium text-white">What types of classes are you looking for?</label>
         <MultiSelect
-        options={categories}
-        selectedValues={tags}
-        onChange={setTags}
-        className="w-full"
+          options={categories}
+          selectedValues={tags}
+          onChange={setTags}
+          className="w-full"
         />
       </div>
+
       <div className="w-full max-w-md px-4 mb-4">
-        <Heading text="What are you willing to drop? " color={COLORS.text} />
+        <label className="text-lg font-medium text-white">What are you willing to drop?</label>
         <InputWithDropdown
           value={have}
           name="have"
@@ -85,7 +63,7 @@ const CreateListing = () => {
       </div>
 
       <div className="w-full max-w-md px-4 mb-4">
-        <Heading text="Which classes do you want? " color={COLORS.text} />
+        <label className="text-lg font-medium text-white">Which classes do you want?</label>
         <InputWithDropdown
           value={want}
           name="want"
@@ -95,8 +73,7 @@ const CreateListing = () => {
         />
       </div>
 
-      <TextButton text="Create Listing" onClick={handleCreateListing}>
-      </TextButton>
+      <TextButton text="Create Listing" onClick={handleCreateListing} />
     </div>
   );
 };
