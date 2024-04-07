@@ -1,13 +1,16 @@
-// Search.js
 import React, { useState } from "react";
 import Input from "../../global/Input";
 import Feed from "../../components/Feed/Feed";
-
+import { COLORS } from "../../global/Colors";
 function Search() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen pt-4">
+    <div className="flex flex-col items-center justify-start h-screen pt-4" style = {
+      {
+        background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.accent2})`
+      }
+    }>
       <Input
         type="text"
         value={search}

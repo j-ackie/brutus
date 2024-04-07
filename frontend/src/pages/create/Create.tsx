@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
-import Listing from '../../components/Listing/Listing';
+import { SubHeading } from '../../global/Text';
+import { TextButton } from '../../global/Buttons';
+import { COLORS } from '../../global/Colors';
 
 const CreateListing = () => {
   const [user, setUser] = useState('');
@@ -24,36 +26,54 @@ const CreateListing = () => {
   };
 
   return (
-    <div>
-      <div>
-        <label>User:</label>
-        <input type="text" value={user} onChange={(e) => setUser(e.target.value)} />
+    <div className="flex flex-col items-center justify-start h-screen pt-4" style = {
+      {
+        background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.accent2})`
+      }
+    }>
+      <div className="mb-4">
+        <SubHeading text="Description: " color={COLORS.text} />
+        <textarea 
+          value={description} 
+          onChange={(e) => setDescription(e.target.value)} 
+          className="rounded-md px-2 py-1 border border-gray-400"
+        />
       </div>
-      <div>
-        <label>Description:</label>
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} />
+      <div className="mb-4">
+        <SubHeading text="What are you dropping? " color={COLORS.text} />
+        <input 
+          type="text" 
+          value={have} 
+          onChange={(e) => setHave(e.target.value)} 
+          className="rounded-md px-2 py-1 border border-gray-400"
+        />
       </div>
-      <div>
-        <label>Have:</label>
-        <input type="text" value={have} onChange={(e) => setHave(e.target.value)} />
+      <div className="mb-4">
+        <SubHeading text="Which classes do you want? " color={COLORS.text} />
+        <input 
+          type="text" 
+          value={want} 
+          onChange={(e) => setWant(e.target.value)} 
+          className="rounded-md px-2 py-1 border border-gray-400"
+        />
       </div>
-      <div>
-        <label>Want:</label>
-        <input type="text" value={want} onChange={(e) => setWant(e.target.value)} />
-      </div>
-      <div>
-        <label>Tags:</label>
-        <input type="text" onKeyDown={(e) => e.key === 'Enter' && handleAddTag(e.currentTarget.value)} />
+      <div className="mb-4">
+        <SubHeading text="Tags: " color={COLORS.text} />
+        <input 
+          type="text" 
+          onKeyDown={(e) => e.key === 'Enter' && handleAddTag(e.currentTarget.value)} 
+          className="rounded-md px-2 py-1 border border-gray-400"
+        />
         <div>
           {tags.map((tag, index) => (
             <div key={index}>
               <span>{tag}</span>
-              <button onClick={() => handleRemoveTag(index)}>x</button>
+              <TextButton text="x" onClick={() => handleRemoveTag(index)}></TextButton>
             </div>
           ))}
         </div>
       </div>
-      <button onClick={handleCreateListing}>Create Listing</button>
+      <TextButton text="Post" onClick={handleCreateListing}></TextButton>
     </div>
   );
 };
