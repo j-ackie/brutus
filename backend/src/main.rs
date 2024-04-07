@@ -53,11 +53,11 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create pool");
 
-    // run the migration
-    sqlx::migrate!("./migrations")
-        .run(&pool)
-        .await
-        .expect("Failed to migrate");
+    // // run the migration
+    // sqlx::migrate!("./migrations")
+    //     .run(&pool)
+    //     .await
+    //     .expect("Failed to migrate");
 
     let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
 
@@ -118,7 +118,7 @@ async fn main() -> std::io::Result<()> {
             .default_service(web::route().to(index))
     })
     .workers(2)
-    .bind("0.0.0.0:8000")?
+    .bind("0.0.0.0:8080")?
     .run()
     .await
 }

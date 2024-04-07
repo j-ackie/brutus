@@ -28,12 +28,12 @@ sqlx = { version = "0.7", features = [
 ] }
 
 
-[env]
-DATABASE_URL = "postgres://postgres:secret@db/brutus"
-PGHOST = "db"
-PGUSER = "postgres"
-PGPASSWORD = "secret"
-PGDATABASE = "brutus"
-POSTGRES_DB = "brutus"
-POSTGRES_USER = "postgres"
-POSTGRES_PASSWORD = "secret"
+# [env]
+# DATABASE_URL = "postgres://postgres:secret@db/brutus"
+# PGHOST = "db"
+# PGUSER = "postgres"
+# PGPASSWORD = "secret"
+# PGDATABASE = "brutus"
+# POSTGRES_DB = "brutus"
+# POSTGRES_USER = "postgres"
+# POSTGRES_PASSWORD = "secret"
