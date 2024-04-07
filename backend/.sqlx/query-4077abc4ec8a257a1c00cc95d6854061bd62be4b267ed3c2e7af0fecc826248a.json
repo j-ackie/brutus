@@ -1,0 +1,64 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "INSERT INTO want (type, class_id, user_id) VALUES ($1, $2, $3) RETURNING id, type as \"want_type: _\", class_id, user_id",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 1,
+        "name": "want_type: _",
+        "type_info": {
+          "Custom": {
+            "name": "wanttype",
+            "kind": {
+              "Enum": [
+                "class",
+                "department",
+                "category"
+              ]
+            }
+          }
+        }
+      },
+      {
+        "ordinal": 2,
+        "name": "class_id",
+        "type_info": "Int4"
+      },
+      {
+        "ordinal": 3,
+        "name": "user_id",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        {
+          "Custom": {
+            "name": "wanttype",
+            "kind": {
+              "Enum": [
+                "class",
+                "department",
+                "category"
+              ]
+            }
+          }
+        },
+        "Int4",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false,
+      false,
+      false
+    ]
+  },
+  "hash": "4077abc4ec8a257a1c00cc95d6854061bd62be4b267ed3c2e7af0fecc826248a"
+}

@@ -1,0 +1,30 @@
+{
+  "db_name": "PostgreSQL",
+  "query": "\n                SELECT listing.poster_id, chat.other_party_id\n                FROM chat\n                JOIN listing ON chat.listing_id = listing.id\n                WHERE chat.id = $1 AND (listing.poster_id = $2 OR chat.other_party_id = $3)\n                ",
+  "describe": {
+    "columns": [
+      {
+        "ordinal": 0,
+        "name": "poster_id",
+        "type_info": "Text"
+      },
+      {
+        "ordinal": 1,
+        "name": "other_party_id",
+        "type_info": "Text"
+      }
+    ],
+    "parameters": {
+      "Left": [
+        "Int4",
+        "Text",
+        "Text"
+      ]
+    },
+    "nullable": [
+      false,
+      false
+    ]
+  },
+  "hash": "7e103e40ee1cc03eefbe0cdcc6e259aeb727f5ccfcd350720cb0cf6eb7443e03"
+}
