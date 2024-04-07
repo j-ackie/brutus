@@ -10,6 +10,7 @@ const CreateListing = () => {
   const [have, setHave] = useState('');
   const [want, setWant] = useState('');
   const [tags, setTags] = useState<string[]>([]);
+  
   const randomOptions = [
     'Mathematics',
     'Physics',
