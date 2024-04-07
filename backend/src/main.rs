@@ -1,11 +1,17 @@
 mod endpoints;
 mod error;
 
-use actix_web::{get, web, App, HttpRequest, HttpServer, Responder};
+use actix_web::dev::ServiceRequest;
+use actix_web::error::ErrorInternalServerError;
+use actix_web::{get, web, App, Error, HttpMessage, HttpRequest, HttpServer, Responder};
+use actix_web_httpauth::extractors::bearer::{BearerAuth, Config};
+use actix_web_httpauth::middleware::HttpAuthentication;
 use dotenv::dotenv;
+use jsonwebtoken::{decode, DecodingKey, Validation};
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
 
+use crate::endpoints::oauth::Claim;
 use crate::error::ApiError;
 
 const TABLES: [&str; 4] = [
@@ -37,31 +43,25 @@ CREATE TABLE IF NOT EXISTS listing (
 );",
 ];
 
-// #[get("/hello/{name}")]
-// async fn greet(name: web::Path<String>) -> impl Responder {
-//     format!("Hello {name}!")
-// }
+async fn validator(
+    req: ServiceRequest,
+    credentials: BearerAuth,
+) -> Result<ServiceRequest, (Error, ServiceRequest)> {
+    let secret_key = env::var("JWT_SECRET_KEY").expect("JWT_SECRET_KEY must be set");
+    let token_message = decode::<Claim>(
+        credentials.token(),
+        &DecodingKey::from_secret(secret_key.as_ref()),
+        &Validation::new(jsonwebtoken::Algorithm::HS256),
+    );
 
-// #[get("/")]
-// async fn index(req: HttpRequest) -> Result<String, ApiError> {
-//     // let pool = req
-//     //     .app_data::<PgPool>()
-//     //     .ok_or_else(|| ApiError::missing_pool_error())?;
+    if let Err(e) = token_message {
+        return Err((ErrorInternalServerError(e.to_string()), req));
+    }
 
-//     // let rows = sqlx::query!("SELECT (id) FROM testing")
-//     //     .fetch_all(pool)
-//     //     .await
-//     //     .map_err(|e| ApiError::internal_error(e.to_string()))?;
-
-//     // let mut out = String::new();
-
-//     // for row in rows {
-//     //     out.push_str(&format!("id: {}\n", row.id.unwrap()));
-//     // }
-
-//     // Ok(out)
-//     Ok(String::from("Hello world!"))
-// }
+    let claim = token_message.unwrap().claims;
+    req.extensions_mut().insert(claim);
+    Ok(req)
+}
 
 async fn initialize_tables(pool: &PgPool) -> Result<(), sqlx::Error> {
     for table in TABLES {
@@ -87,14 +87,29 @@ async fn main() -> std::io::Result<()> {
         .expect("Failed to initialize tables");
 
     HttpServer::new(move || {
+        let auth = HttpAuthentication::bearer(validator);
+
         App::new()
             .app_data(pool.clone())
-            // .service(greet)
-            // .service(index)
-            .service(endpoints::api::get_listing)
-            .service(endpoints::api::create_listing)
-            .service(endpoints::oauth::redirect)
-            .service(endpoints::oauth::callback)
+            .route(
+                "/listings/{id}",
+                web::get().to(endpoints::api::listing::get_listing),
+            )
+            .route(
+                "/listings",
+                web::post()
+                    .to(endpoints::api::listing::create_listing)
+                    .wrap(auth.clone()),
+            )
+            .route("/users/{id}", web::get().to(endpoints::api::user::get_user))
+            .route(
+                "/users/{id}",
+                web::put()
+                    .to(endpoints::api::user::update_user)
+                    .wrap(auth.clone()),
+            )
+            .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))
+            .route("/oauth/callback", web::get().to(endpoints::oauth::callback))
     })
     .bind("127.0.0.1:8080")?
     .bind("[::1]:8080")?

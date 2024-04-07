@@ -1,5 +1,6 @@
 use actix_web::{get, web, HttpRequest, HttpResponse, Responder};
 use chrono::{Duration, Utc};
+use core::fmt;
 use jsonwebtoken::{encode, EncodingKey, Header};
 use oauth2::basic::BasicClient;
 use oauth2::{
@@ -49,7 +50,7 @@ fn get_google_oauth_client() -> Result<BasicClient, Box<dyn std::error::Error>> 
         "http://localhost:8080/oauth/callback".to_string(),
     )?))
 }
-#[get("/oauth/redirect")]
+// #[get("/oauth/redirect")]
 pub async fn redirect() -> ApiResult<HttpResponse> {
     let google_oauth_client = get_google_oauth_client().map_err(ApiError::internal_error)?;
     let (auth_url, _csrf_token) = google_oauth_client
@@ -64,14 +65,24 @@ pub async fn redirect() -> ApiResult<HttpResponse> {
         .finish())
 }
 
-#[derive(Serialize)]
-struct Claim {
+#[derive(Serialize, Deserialize)]
+pub struct Claim {
     sub: String,
     exp: usize,
     email: String,
 }
 
-#[get("/oauth/callback")]
+impl fmt::Display for Claim {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            "sub: {}, exp: {}, email: {}",
+            self.sub, self.exp, self.email
+        )
+    }
+}
+
+// #[get("/oauth/callback")]
 pub async fn callback(
     req: HttpRequest,
     query: web::Query<HashMap<String, String>>,
