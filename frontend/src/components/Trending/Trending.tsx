@@ -59,7 +59,6 @@ function Trending() {
         label: 'Desired',
         data: queryData.map((element) => element.wants),
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
-        color: "white"
       }
     ],
   };
