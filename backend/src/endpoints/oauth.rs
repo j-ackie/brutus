@@ -1,3 +1,5 @@
+use actix_web::cookie::Cookie;
+use actix_web::http::header;
 use actix_web::{web, HttpRequest, HttpResponse, Responder};
 use chrono::{Duration, Utc};
 use core::fmt;
@@ -59,6 +61,8 @@ pub async fn redirect() -> ApiResult<HttpResponse> {
             "https://www.googleapis.com/auth/userinfo.email".to_string(),
         ))
         .url();
+
+    println!("auth url: {auth_url}");
 
     Ok(HttpResponse::Found()
         .append_header(("Location", auth_url.to_string()))
@@ -138,7 +142,14 @@ pub async fn callback(
     )
     .expect("Failed to encode token");
 
-    Ok(HttpResponse::SeeOther()
-        .append_header(("Location", "/"))
-        .json(token))
+    let cookie = Cookie::build("token", token)
+        .path("/")
+        .http_only(true)
+        .secure(true)
+        .finish();
+
+    Ok(HttpResponse::Found()
+        .insert_header((header::SET_COOKIE, cookie.to_string()))
+        .insert_header((header::LOCATION, "/"))
+        .finish())
 }

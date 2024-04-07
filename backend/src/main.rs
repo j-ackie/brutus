@@ -19,11 +19,20 @@ use std::env;
 
 async fn validator(
     req: ServiceRequest,
-    credentials: BearerAuth,
+    _: BearerAuth,
 ) -> Result<ServiceRequest, (Error, ServiceRequest)> {
     let secret_key = env::var("JWT_SECRET_KEY").expect("JWT_SECRET_KEY must be set");
+    let token = if let Some(token) = req.cookie("token") {
+        token
+    } else {
+        return Err((
+            ErrorInternalServerError("No token provided".to_string()),
+            req,
+        ));
+    };
+
     let token_message = decode::<Claim>(
-        credentials.token(),
+        token.value(),
         &DecodingKey::from_secret(secret_key.as_ref()),
         &Validation::new(jsonwebtoken::Algorithm::HS256),
     );
@@ -53,7 +62,6 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create pool");
 
-    println!("starting websocket chat server");
     let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
 
     HttpServer::new(move || {
