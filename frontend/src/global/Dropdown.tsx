@@ -61,7 +61,7 @@ const InputWithDropdown: React.FC<InputWithDropdownProps> = ({ value, name, opti
         onChange={(e) => setSelectedValue(e.target.value)}
         onFocus={handleInputFocus}
         onBlur={handleBlur}
-        className={className + " outline-none border-b-2 focus:border-b-accent text-text bg-transparent"}
+        className={className + " p-2 outline-none border-b-2 focus:border-b-accent text-text bg-transparent"}
       />
       {isDropdownOpen && (
         <select
