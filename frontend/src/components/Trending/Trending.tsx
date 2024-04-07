@@ -63,7 +63,7 @@ function Trending() {
         backgroundColor: 'rgba(0, 255, 0, 0.5)',
       },
       {
-        label: 'Dropped',
+        label: 'Offered',
         data: queryData.map((element) => -1 * element.gives),
         backgroundColor: 'rgba(255, 0, 0, 0.5)',
       }

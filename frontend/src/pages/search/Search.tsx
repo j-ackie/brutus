@@ -6,7 +6,8 @@ function Search() {
   const [search, setSearch] = useState("");
 
   return (
-    <div className="flex flex-col items-center justify-start h-screen pt-4" style = {
+    <div className="flex flex-col items-center justify-start h-screen pt-4"
+    style = {
       {
         background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.accent2})`
       }
@@ -16,7 +17,7 @@ function Search() {
         value={search}
         name="search"
         placeholder="Search..."
-        className="w-full"
+        className="mb-4 w-4/5"
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
       />
       <Feed searchTerm={search} />
