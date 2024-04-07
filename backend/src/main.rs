@@ -4,7 +4,6 @@ mod websocket;
 
 use actix::Actor;
 use actix_cors::Cors;
-use actix_files::NamedFile;
 use actix_web::dev::ServiceRequest;
 use actix_web::error::ErrorInternalServerError;
 use actix_web::web::Data;
@@ -38,9 +37,8 @@ async fn validator(
     Ok(req)
 }
 
-#[actix_web::get("/")]
 async fn index() -> impl Responder {
-    NamedFile::open_async("./e.html").await.unwrap()
+    actix_files::NamedFile::open("./build/index.html")
 }
 
 #[actix_web::main]
@@ -101,6 +99,8 @@ async fn main() -> std::io::Result<()> {
             .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))
             .route("/oauth/callback", web::get().to(endpoints::oauth::callback))
             .service(websocket::ws_route)
+            .service(actix_files::Files::new("/static", "./build/static").show_files_listing())
+            .default_service(web::route().to(index))
     })
     .workers(2)
     .bind("127.0.0.1:8080")?
