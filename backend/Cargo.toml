@@ -29,7 +29,6 @@ sqlx = { version = "0.7", features = [
 
 
 [env]
-
 DATABASE_URL = "postgres://postgres:secret@db/brutus"
 PGHOST = "db"
 PGUSER = "postgres"
