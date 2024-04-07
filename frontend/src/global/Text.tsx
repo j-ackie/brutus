@@ -33,7 +33,7 @@ function SubHeading({text, color=COLORS.text, ...props} : TextProps) {
 
 function Heading({text, color=COLORS.text, ...props} : TextProps) {
   return (
-    <div style={{color: color, fontSize: '2rem'}} {...props}>
+    <div style={{color: color}} className='text-8xl' {...props}>
       {text}
     </div>
   )
