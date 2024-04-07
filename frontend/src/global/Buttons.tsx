@@ -20,7 +20,7 @@ function IconButton({color, onClick, children, ...props} : IconProps) {
   return (
     <button {...props} onClick={onClick}
     //make the border size thicker
-      className="rounded-full border border-primary p-2 hover:bg-primary hover:text-white duration-200"
+      className="rounded-full border border-primary p-2 hover:bg-lightblue hover:text-white duration-200"
       style={{
         color: color,
       }}>

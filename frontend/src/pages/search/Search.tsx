@@ -17,10 +17,15 @@ function Search() {
         value={search}
         name="search"
         placeholder="Search..."
-        className="mb-4 w-4/5"
+        className="mb-4 w-4/5 "
         onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
       />
-      <Feed searchTerm={search} />
+      <div className="flex-1 w-4/5 flex flex-row justify-between overflow-y-scroll">
+        <div>
+          alsdifuhlaueghaowiguh
+        </div>
+        <Feed searchTerm={search}/>
+      </div>
     </div>
   );
 }
