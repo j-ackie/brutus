@@ -15,7 +15,7 @@ use actix_web_httpauth::middleware::HttpAuthentication;
 use dotenv::dotenv;
 use endpoints::oauth::Claim;
 use jsonwebtoken::{decode, DecodingKey, Validation};
-use sqlx::{postgres::PgPoolOptions, PgPool};
+use sqlx::postgres::PgPoolOptions;
 use std::env;
 
 async fn validator(
@@ -54,11 +54,6 @@ async fn main() -> std::io::Result<()> {
         .connect(&db_url)
         .await
         .expect("Failed to create pool");
-
-    sqlx::migrate!()
-        .run(&pool)
-        .await
-        .expect("Failed to run DB migrations");
 
     println!("starting websocket chat server");
     let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
