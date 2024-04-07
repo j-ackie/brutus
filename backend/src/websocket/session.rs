@@ -31,23 +31,6 @@ pub struct WsChatSession {
     pub server_addr: Addr<server::ChatServer>,
 }
 
-#[derive(Debug)]
-pub enum ResponseType {
-    Success,
-    Error,
-}
-
-#[derive(Debug)]
-pub enum ResponseEventType {
-    Join,
-    Message,
-}
-#[derive(Debug)]
-pub struct Response {
-    pub success: ResponseType,
-    pub event: ResponseEventType,
-    pub message: String,
-}
 
 impl WsChatSession {
     /// helper method that sends ping to client every 5 seconds (HEARTBEAT_INTERVAL).

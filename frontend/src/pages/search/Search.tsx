@@ -7,7 +7,7 @@ import { Label, SubHeading } from "../../global/Text";
 function Search() {
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
-  const tags = ["React", "JavaScript", "CSS", "HTML", "CS", "300", "400", "500", "600", "700"];
+  const tags = ["React", "JavaScript", "CSS", "HTML", "CS", "300", "400", "500", "600", "700", "Electives", "300+", "400+"];
 
   const toggleTag = (tag: string) => {
     setSelectedTags(prevTags =>
