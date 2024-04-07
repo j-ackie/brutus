@@ -144,7 +144,7 @@ pub async fn callback(
 
     let cookie = Cookie::build("token", token)
         .path("/")
-        .http_only(true)
+        .http_only(false)
         .secure(true)
         .finish();
 
