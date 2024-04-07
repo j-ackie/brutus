@@ -38,7 +38,6 @@ pub async fn get_listing(req: HttpRequest, path: web::Path<i32>) -> ApiResult<Ht
         .fetch_one(pool)
         .await?;
 
-    // return json of row
     Ok(HttpResponse::Ok().json(row))
 }
 

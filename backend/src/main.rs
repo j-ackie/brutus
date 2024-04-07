@@ -1,27 +1,30 @@
 mod endpoints;
 mod error;
+mod websocket;
 
+use actix::Actor;
 use actix_cors::Cors;
+use actix_files::NamedFile;
 use actix_web::dev::ServiceRequest;
 use actix_web::error::ErrorInternalServerError;
-use actix_web::{get, web, App, Error, HttpMessage, HttpRequest, HttpServer, Responder};
-use actix_web_httpauth::extractors::bearer::{BearerAuth, Config};
+use actix_web::web::Data;
+use actix_web::{web, App, Error, HttpMessage, HttpServer, Responder};
+use actix_web_httpauth::extractors::bearer::BearerAuth;
 use actix_web_httpauth::middleware::HttpAuthentication;
+
 use dotenv::dotenv;
+use endpoints::oauth::Claim;
 use jsonwebtoken::{decode, DecodingKey, Validation};
 use sqlx::{postgres::PgPoolOptions, PgPool};
 use std::env;
 
-use crate::endpoints::oauth::Claim;
-use crate::error::ApiError;
-
-const TABLES: [&str; 5] = [
+const TABLES: [&str; 7] = [
     "CREATE TABLE IF NOT EXISTS users (
-    id TEXT PRIMARY KEY,
-    username TEXT,
-    email TEXT NOT NULL,
-    profile_picture_url TEXT
-);",
+        id TEXT PRIMARY KEY,
+        username TEXT,
+        email TEXT NOT NULL,
+        profile_picture_url TEXT
+    );",
     "CREATE TABLE IF NOT EXISTS class (
     id SERIAL PRIMARY KEY,
     class_name TEXT NOT NULL,
@@ -49,6 +52,19 @@ CREATE TABLE IF NOT EXISTS listing (
     have_id INTEGER NOT NULL REFERENCES class(id),
     want_id INTEGER NOT NULL REFERENCES want(id)
 );",
+    "CREATE TABLE IF NOT EXISTS chat (
+        id SERIAL PRIMARY KEY,
+        listing_id INTEGER NOT NULL REFERENCES listing(id) ON DELETE CASCADE,
+        other_party_id TEXT NOT NULL REFERENCES users(id)
+    );",
+    "CREATE TABLE IF NOT EXISTS message (
+        id SERIAL PRIMARY KEY,
+        content TEXT NOT NULL,
+        chat_id INTEGER NOT NULL REFERENCES chat(id) ON DELETE CASCADE,
+        sender_id TEXT NOT NULL REFERENCES users(id),
+        read BOOLEAN NOT NULL DEFAULT FALSE,
+        created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+    );",
 ];
 
 async fn validator(
@@ -78,6 +94,11 @@ async fn initialize_tables(pool: &PgPool) -> Result<(), sqlx::Error> {
     Ok(())
 }
 
+#[actix_web::get("/")]
+async fn index() -> impl Responder {
+    NamedFile::open_async("./e.html").await.unwrap()
+}
+
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
     dotenv().ok();
@@ -94,11 +115,15 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to initialize tables");
 
+    println!("starting websocket chat server");
+    let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
+
     HttpServer::new(move || {
         let auth = HttpAuthentication::bearer(validator);
 
         App::new()
             .app_data(pool.clone())
+            .app_data(Data::new(server.clone()))
             .wrap(Cors::permissive())
             .route(
                 "/listings/{id}",
@@ -135,10 +160,10 @@ async fn main() -> std::io::Result<()> {
             )
             .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))
             .route("/oauth/callback", web::get().to(endpoints::oauth::callback))
+            .service(websocket::ws_route)
     })
+    .workers(2)
     .bind("127.0.0.1:8080")?
-    .bind("[::1]:8080")?
-    // .bind("[::1]:8080")?
     .run()
     .await
 }
