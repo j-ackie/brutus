@@ -1,10 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { IconButton } from '../../global/Buttons';
 import { useNavigate } from 'react-router-dom';
 import { COLORS } from '../../global/Colors';
 
 function BottomBar() {
   const navigate = useNavigate();
+  const [selected, setSelected] = useState(0)
 
   const routes = [
     {

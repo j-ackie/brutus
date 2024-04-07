@@ -1,4 +1,4 @@
-type Chat = {
+type ChatType = {
   chatid: number
   user1: string,
   user2: string,
@@ -6,8 +6,14 @@ type Chat = {
   have: boolean
 }
 
+type MessageType = {
+  id: number,
+  name: string,
+  message: string
+}
 
-function chatsQuery() : Chat[] {
+
+function chatsQuery() : ChatType[] {
   const mockData = [
     {
       chatid: 1,
@@ -70,4 +76,37 @@ function chatsQuery() : Chat[] {
   return mockData
 }
 
-export { chatsQuery, Chat }
+function getMessagesFromChatId(id : number) : MessageType[] {
+  const mockData = [
+    {
+      id: 1,
+      name: "john",
+      message: "lkjasdflkjhasdlfkjhasdlkfjhalksdjfhlaksdjfh"
+    },
+    {
+      id: 2,
+      name: "joe",
+      message: "melm"
+    },
+    {
+      id: 3,
+      name: "john",
+      message: "qwert"
+    },
+    {
+      id: 4,
+      name: "joe",
+      message: "i want him to leave me on an egg hunt or something"
+    },
+    {
+      id: 5,
+      name: "john",
+      message: "it is joever"
+    },
+
+  ]
+
+  return mockData
+}
+
+export { chatsQuery, getMessagesFromChatId, ChatType, MessageType }
