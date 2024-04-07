@@ -1,4 +1,7 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import Input from './Input';
+import { Label } from './Text';
+import { COLORS } from './Colors';
 
 type InputWithDropdownProps = {
   value: string;
@@ -11,12 +14,9 @@ type InputWithDropdownProps = {
 const InputWithDropdown: React.FC<InputWithDropdownProps> = ({ value, name, options, onChange, className }) => {
   const [selectedValue, setSelectedValue] = useState(value);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
-  const dropdownRef = useRef<HTMLSelectElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    // Handler to close dropdown if clicked outside
     const handleClickOutside = (event: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
         setIsDropdownOpen(false);
@@ -24,60 +24,38 @@ const InputWithDropdown: React.FC<InputWithDropdownProps> = ({ value, name, opti
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
+    return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedOption = e.target.value;
-    setSelectedValue(selectedOption);
-    onChange(selectedOption);
-    setIsDropdownOpen(false); // Explicitly close the dropdown
-  };
-
-  const handleInputFocus = () => {
-    setIsDropdownOpen(true);
-  };
-
-  // Adjusted onBlur handler to account for focus within the dropdown
-  const handleBlur = (e: React.FocusEvent<HTMLInputElement>) => {
-    // Delay hiding dropdown to allow for selection
-    setTimeout(() => {
-      // Check if the new focus is not on the dropdown
-      if (!dropdownRef.current?.contains(document.activeElement)) {
-        setIsDropdownOpen(false);
-      }
-    }, 200);
+  // This function now directly accepts a string argument, the option value
+  const handleOptionClick = (option: string) => {
+    setSelectedValue(option);
+    onChange(option);
+    setIsDropdownOpen(false);
   };
 
   return (
-    <div ref={containerRef} style={{ position: 'relative' }}>
-      <input
-        ref={inputRef}
+    <div ref={containerRef} className={`relative w-full ${className}`}>
+      <Input
         type="text"
         value={selectedValue}
         name={name}
-        onChange={(e) => setSelectedValue(e.target.value)}
-        onFocus={handleInputFocus}
-        onBlur={handleBlur}
-        className={className + " p-2 outline-none border-b-2 focus:border-b-accent text-text bg-transparent"}
+        readOnly
+        onFocus={() => setIsDropdownOpen(true)}
+        className="p-2 w-full outline-none border-b-2 focus:border-b-accent text-text bg-transparent"
       />
       {isDropdownOpen && (
-        <select
-          ref={dropdownRef}
-          value={selectedValue}
-          onChange={handleSelectChange}
-          size={options.length}
-          style={{ position: 'absolute', top: '100%', left: 0, zIndex: 999, width: '100%', overflow: 'auto' }}
-          // Removed onBlur from select to simplify state management
-        >
+        <div className="absolute z-10 rounded-xl border border-gray-400 mt-1 w-full overflow-hidden">
           {options.map((option) => (
-            <option key={option} value={option}>
-              {option}
-            </option>
+            <div 
+              key={option}
+              className={`px-1 py-1 bg-white cursor-pointer ${selectedValue === option ? 'bg-accent text-black' : 'text-black hover:bg-lightblue'}`}
+              onClick={() => handleOptionClick(option)} // Use handleOptionClick here
+            >
+              <Label text={option} color={COLORS.black} />
+            </div>
           ))}
-        </select>
+        </div>
       )}
     </div>
   );
