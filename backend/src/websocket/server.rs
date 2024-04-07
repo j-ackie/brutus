@@ -60,7 +60,7 @@ impl Handler<ChatMessageToServer> for ChatServer {
             }
         }
 
-        let pool = self.pool.clone();
+        // let pool = self.pool.clone();
         async move {
             // let result = chat_repository::insert_chat_message(
             //     msg.sender_id,
