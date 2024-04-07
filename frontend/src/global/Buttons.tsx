@@ -19,7 +19,11 @@ type TextButtonProps = {
 function IconButton({color, onClick, children, ...props} : IconProps) {
   return (
     <button {...props} onClick={onClick}
-      className="rounded-full border border-slate-600 p-2">
+    //make the border size thicker
+      className="rounded-full border border-primary p-2 hover:bg-primary hover:text-white duration-200"
+      style={{
+        color: color,
+      }}>
       {children}
     </button>
   )
