@@ -13,7 +13,7 @@ function ChatDisplay({id} : {id : number}) {
     <div className='flex flex-col h-full'>
       Now displaying: {id}
 
-      <div className='flex-grow'>
+      <div className='flex-grow overflow-y-scroll'>
         {
         messages.map(msg => <Message message={msg}/>)
         }
