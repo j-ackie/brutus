@@ -19,20 +19,11 @@ use std::env;
 
 async fn validator(
     req: ServiceRequest,
-    _: BearerAuth,
+    credentials: BearerAuth,
 ) -> Result<ServiceRequest, (Error, ServiceRequest)> {
     let secret_key = env::var("JWT_SECRET_KEY").expect("JWT_SECRET_KEY must be set");
-    let token = if let Some(token) = req.cookie("token") {
-        token
-    } else {
-        return Err((
-            ErrorInternalServerError("No token provided".to_string()),
-            req,
-        ));
-    };
-
     let token_message = decode::<Claim>(
-        token.value(),
+        credentials.token(),
         &DecodingKey::from_secret(secret_key.as_ref()),
         &Validation::new(jsonwebtoken::Algorithm::HS256),
     );
@@ -61,6 +52,12 @@ async fn main() -> std::io::Result<()> {
         .connect(&db_url)
         .await
         .expect("Failed to create pool");
+
+    // run the migration
+    sqlx::migrate!("./migrations")
+        .run(&pool)
+        .await
+        .expect("Failed to migrate");
 
     let server = websocket::server::ChatServer::new(Data::new(pool.clone())).start();
 
@@ -121,7 +118,7 @@ async fn main() -> std::io::Result<()> {
             .default_service(web::route().to(index))
     })
     .workers(2)
-    .bind("127.0.0.1:8080")?
+    .bind("0.0.0.0:8000")?
     .run()
     .await
 }
