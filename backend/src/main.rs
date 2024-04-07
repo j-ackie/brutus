@@ -32,8 +32,13 @@ async fn validator(
         return Err((ErrorInternalServerError(e.to_string()), req));
     }
 
-    let claim = token_message.unwrap().claims;
+    let token_message = token_message.unwrap();
+
+    println!("Token message: {:?}", token_message.claims);
+
+    let claim = token_message.claims;
     req.extensions_mut().insert(claim);
+    println!("made it all the way ;");
     Ok(req)
 }
 
@@ -109,6 +114,12 @@ async fn main() -> std::io::Result<()> {
                 "/chats",
                 web::get()
                     .to(endpoints::api::chat::get_chats)
+                    .wrap(auth.clone()),
+            )
+            .route(
+                "/start_chat",
+                web::post()
+                    .to(endpoints::api::chat::start_chat)
                     .wrap(auth.clone()),
             )
             .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))

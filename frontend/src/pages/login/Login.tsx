@@ -14,7 +14,8 @@ function Login() {
         <button
           className="border rounded-xl p-4 flex flex-row items-center hover:shadow-md duration-200"
           onClick={() => {
-            window.location.href = "http://localhost:8080/oauth/redirect";
+            window.location.href =
+              process.env.REACT_APP_API_URL + "/oauth/redirect";
           }}>
           <img src={GOOGLE} className="h-8 w-8 mr-2" />
           <SubHeading text="Login with Google..." color={COLORS.black} />

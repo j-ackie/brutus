@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import fetchData from "../../api/fetchData";
+import { fetchData } from "../../api/fetchData";
 import { Listing } from "../../types";
 
 const getFeed = async () => {

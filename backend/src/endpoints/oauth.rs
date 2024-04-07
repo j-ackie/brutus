@@ -69,7 +69,7 @@ pub async fn redirect() -> ApiResult<HttpResponse> {
         .finish())
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Serialize, Deserialize, Debug)]
 pub struct Claim {
     pub sub: String,
     pub exp: usize,

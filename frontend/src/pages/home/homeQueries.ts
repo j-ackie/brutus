@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import fetchData from "../../api/fetchData";
+import { fetchData } from "../../api/fetchData";
 
 function listingQuery() {
   const listingProps = {
@@ -27,7 +27,7 @@ function listingQuery() {
     want: "ECON 401, ECON 402",
     tags: ["Economics", "Electives"],
     created_at: new Date(
-      Date.now() - Math.floor(Math.random() * 10000000000)
+      Date.now() - Math.floor(Math.random() * 10000000000),
     ).toLocaleDateString(),
   };
 
@@ -38,7 +38,7 @@ function listingQuery() {
     want: "MATH 401, MATH 402",
     tags: ["Mathematics", "Advanced", "Electives"],
     created_at: new Date(
-      Date.now() - Math.floor(Math.random() * 10000000000)
+      Date.now() - Math.floor(Math.random() * 10000000000),
     ).toLocaleDateString(),
   };
 
@@ -49,7 +49,7 @@ function listingQuery() {
     want: "BIOL 401, BIOL 402",
     tags: ["Biology", "Electives"],
     created_at: new Date(
-      Date.now() - Math.floor(Math.random() * 10000000000)
+      Date.now() - Math.floor(Math.random() * 10000000000),
     ).toLocaleDateString(),
   };
 
@@ -60,7 +60,7 @@ function listingQuery() {
     want: "ENGL 401, ENGL 402",
     tags: ["Literature", "Electives"],
     created_at: new Date(
-      Date.now() - Math.floor(Math.random() * 10000000000)
+      Date.now() - Math.floor(Math.random() * 10000000000),
     ).toLocaleDateString(),
   };
 
@@ -71,7 +71,7 @@ function listingQuery() {
     want: "HIST 401, HIST 402",
     tags: ["History", "Electives"],
     created_at: new Date(
-      Date.now() - Math.floor(Math.random() * 10000000000)
+      Date.now() - Math.floor(Math.random() * 10000000000),
     ).toLocaleDateString(),
   };
 

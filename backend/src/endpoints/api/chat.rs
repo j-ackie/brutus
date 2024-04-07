@@ -5,9 +5,9 @@ use crate::{
     endpoints::api::want::{Want, WantType},
 };
 
-use actix_web::{web, HttpMessage, HttpRequest, HttpResponse};
+use actix_web::{post, web, HttpMessage, HttpRequest, HttpResponse};
 use serde::{Deserialize, Serialize};
-use sqlx::{types::time::OffsetDateTime, PgPool, Row};
+use sqlx::{types::time::OffsetDateTime, PgPool};
 
 use crate::{
     endpoints::oauth::Claim,
@@ -84,23 +84,17 @@ fn row_to_chat(row: ChatRow) -> Chat {
     }
 }
 
-pub async fn get_chats(req: HttpRequest, info: web::Query<Info>) -> ApiResult<HttpResponse> {
+pub async fn get_chats(req: HttpRequest) -> ApiResult<HttpResponse> {
     let pool = req
         .app_data::<PgPool>()
         .ok_or_else(ApiError::missing_pool_error)?;
 
-    let user_id = info.user_id.clone();
-
-    let extensions = req.extensions();
-
-    let claim = extensions
-        .get::<Claim>()
-        .ok_or_else(ApiError::unauthorized)?;
-
-    println!("{}", claim.sub);
-    if user_id != claim.sub {
-        return Err(ApiError::unauthorized());
-    }
+    let mut extensions = req.extensions_mut();
+    let user_id = extensions
+        .get_mut::<Claim>()
+        .ok_or_else(ApiError::unauthorized)?
+        .sub
+        .clone();
 
     let rows = sqlx::query_as!(
         ChatRow,
@@ -140,4 +134,37 @@ pub async fn get_chats(req: HttpRequest, info: web::Query<Info>) -> ApiResult<Ht
     let chats = rows.into_iter().map(row_to_chat).collect::<Vec<_>>();
 
     Ok(HttpResponse::Ok().json(chats))
+}
+
+#[derive(Deserialize)]
+pub struct StartChatPayload {
+    listing_id: i32,
+}
+
+pub async fn start_chat(
+    req: HttpRequest,
+    info: web::Json<StartChatPayload>,
+) -> ApiResult<HttpResponse> {
+    println!("hello from start_chat");
+    let pool = req
+        .app_data::<PgPool>()
+        .ok_or_else(ApiError::missing_pool_error)?;
+
+    let mut extensions = req.extensions_mut();
+    let user_id = extensions
+        .get_mut::<Claim>()
+        .ok_or_else(ApiError::unauthorized)?
+        .sub
+        .clone();
+
+    sqlx::query!(
+        "INSERT INTO chat (listing_id, other_party_id) VALUES ($1, $2)",
+        info.listing_id,
+        user_id
+    )
+    .execute(pool)
+    .await?;
+
+    // Return success response
+    Ok(HttpResponse::Ok().json("Chat started successfully"))
 }
