@@ -15,7 +15,7 @@ struct Listing {
 }
 
 #[derive(Debug, Deserialize)]
-struct CreateListingRequest {
+pub struct CreateListingRequest {
     poster_id: String,
     title: String,
     description: String,
@@ -23,7 +23,7 @@ struct CreateListingRequest {
     want_id: i32,
 }
 
-#[get("/listing/{id}")]
+// #[get("/listings/{id}")]
 pub async fn get_listing(req: HttpRequest, path: web::Path<i32>) -> ApiResult<HttpResponse> {
     let pool = req
         .app_data::<PgPool>()
@@ -35,12 +35,11 @@ pub async fn get_listing(req: HttpRequest, path: web::Path<i32>) -> ApiResult<Ht
         .fetch_one(pool)
         .await?;
 
-    println!("HELLO?");
     // return json of row
     Ok(HttpResponse::Ok().json(row))
 }
 
-#[post("/listing")]
+// #[post("/listings")]
 pub async fn create_listing(
     req: HttpRequest,
     body: web::Json<CreateListingRequest>,
@@ -59,7 +58,7 @@ pub async fn create_listing(
 
     let result = sqlx::query_as!(
         Listing,
-        "INSERT INTO listing (poster_id, title, description, have_id, want_id) VALUES ($1, $2, $3, $4, $5) RETURNING id, poster_id, title, description, have_id, want_id",
+        "INSERT INTO listing (poster_id, title, description, have_id, want_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
         poster_id,
         title,
         description,
@@ -68,6 +67,5 @@ pub async fn create_listing(
     ).fetch_one(pool)
     .await?;
 
-    println!("here");
     Ok(HttpResponse::Created().json(result))
 }
