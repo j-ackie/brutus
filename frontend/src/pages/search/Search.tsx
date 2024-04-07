@@ -7,7 +7,7 @@ function Search() {
   const [search, setSearch] = useState("");
 
   return (
-    <div>
+    <div className="flex flex-col items-center justify-start h-screen pt-4">
       <Input
         type="text"
         value={search}
