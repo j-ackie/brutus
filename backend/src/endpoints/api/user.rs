@@ -8,11 +8,11 @@ use serde::{Deserialize, Serialize};
 use sqlx::PgPool;
 
 #[derive(sqlx::FromRow, Serialize)]
-struct User {
-    id: String,
-    username: Option<String>,
-    email: String,
-    profile_picture_url: Option<String>,
+pub struct User {
+    pub id: String,
+    pub username: Option<String>,
+    pub email: String,
+    pub profile_picture_url: Option<String>,
 }
 
 #[derive(sqlx::FromRow, Deserialize)]

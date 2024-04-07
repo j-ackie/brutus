@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,21 +9,15 @@ import {
   Colors,
 } from "chart.js";
 import { Bar } from "react-chartjs-2";
-import { trendingQuery } from "../../pages/home/homeQueries";
-import { useQuery } from "react-query";
+import { useTrending } from "../../pages/home/homeQueries";
+import Loading from "../../global/Loading";
 
 function Trending() {
-  const {
-    data: trendingData,
-    isLoading,
-    isError,
-  } = useQuery("trending", trendingQuery);
+  const { data: trendingData, isLoading, isError } = useTrending();
 
-  console.log(trendingData);
+  if (isLoading) return <Loading />;
 
-  if (isLoading) return null;
-
-  if (!trendingData) return null;
+  if (isError) return null;
 
   const queryData = trendingData;
 
@@ -76,19 +69,19 @@ function Trending() {
     },
   };
 
-  const labels = queryData.map((element: any) => element.name);
+  const labels = queryData?.map((element: any) => element.class_name);
 
   const data = {
     labels,
     datasets: [
       {
         label: "Desired",
-        data: queryData.map((element: any) => -1 * element.wants),
+        data: queryData?.map((element: any) => -1 * element.want_count),
         backgroundColor: "rgba(255, 0, 0, 0.5)",
       },
       {
         label: "Offered",
-        data: queryData.map((element: any) => element.gives),
+        data: queryData?.map((element: any) => element.drop_count),
         backgroundColor: "rgba(0, 255, 0, 0.5)",
       },
     ],

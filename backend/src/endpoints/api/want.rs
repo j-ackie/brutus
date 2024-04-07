@@ -10,8 +10,8 @@ use crate::{
 
 #[derive(sqlx::Type, Debug, Serialize, Deserialize)]
 #[sqlx(rename_all = "lowercase")]
-#[sqlx(type_name = "want_type")]
-enum WantType {
+#[sqlx(type_name = "wanttype")]
+pub enum WantType {
     #[serde(rename = "class")]
     Class,
     #[serde(rename = "category")]
@@ -21,11 +21,11 @@ enum WantType {
 }
 
 #[derive(sqlx::FromRow, Serialize)]
-struct Want {
-    id: i32,
-    want_type: WantType,
-    class_id: i32,
-    user_id: String,
+pub struct Want {
+    pub id: i32,
+    pub want_type: WantType,
+    pub class_id: i32,
+    pub user_id: String,
 }
 
 #[derive(Debug, Deserialize)]

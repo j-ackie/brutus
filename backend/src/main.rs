@@ -71,6 +71,10 @@ async fn main() -> std::io::Result<()> {
             .app_data(Data::new(server.clone()))
             .wrap(Cors::permissive())
             .route(
+                "/listings",
+                web::get().to(endpoints::api::listing::get_listings),
+            )
+            .route(
                 "/listings/{id}",
                 web::get().to(endpoints::api::listing::get_listing),
             )

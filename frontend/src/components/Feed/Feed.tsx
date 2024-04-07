@@ -1,7 +1,10 @@
 import React from "react";
-import Listing from "../Listing/Listing";
+import { Listing as ListingType } from "../../types";
 import { listingQuery } from "../../pages/home/homeQueries";
 import Fuse from "fuse.js";
+import useFeed from "./useFeed";
+import Loading from "../../global/Loading";
+import Listing from "../Listing/Listing";
 
 interface ListingItem {
   id: string;
@@ -24,7 +27,13 @@ function Feed({
   searchTerm: string;
   selectedTags?: string[];
 }) {
-  const listings = listingQuery();
+  const { data, isLoading, isError } = useFeed();
+
+  if (isLoading) return <Loading />;
+
+  if (isError || !data) return null;
+
+  const listings = data;
   listings.sort(
     (a, b) =>
       new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
@@ -37,26 +46,26 @@ function Feed({
 
   const fuse = new Fuse(listings, fuseOptions);
 
-  let searchResults: ListingItem[] = searchTerm
+  let searchResults: ListingType[] = searchTerm
     ? fuse.search(searchTerm).map((item: any) => item.item)
     : listings;
 
   if (selectedTags && selectedTags.length > 0) {
-    searchResults = searchResults.filter((listing) =>
-      selectedTags.every((tag) => listing.tags.includes(tag))
-    );
+    // searchResults = searchResults.filter((listing) =>
+    //   selectedTags.every((tag) => listing.tags.includes(tag))
+    // );
   }
 
   // Generate a unique ID for each listing result to ensure React keys are unique
-  searchResults = searchResults.map((listing) => ({
-    ...listing,
-    id: generateId(),
-  }));
+  // searchResults = searchResults.map((listing) => ({
+  //   ...listing,
+  //   id: generateId(),
+  // }));
 
   return (
     <div className="overflow-y-scroll pb-20">
       {searchResults.map((result) => (
-        <Listing key={result.id} {...result} />
+        <Listing key={result.id} listing={result} />
       ))}
     </div>
   );

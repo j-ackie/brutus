@@ -86,8 +86,22 @@ function listingQuery() {
   ];
 }
 
-async function trendingQuery() {
-  return await fetchData("trending");
+interface TrendingClass {
+  id: number;
+  class_name: string;
+  department: string;
+  want_count: number;
+  drop_count: number;
 }
 
-export { listingQuery, trendingQuery };
+async function trendingQuery(): Promise<TrendingClass[]> {
+  const trending = await fetchData("trending");
+
+  if (!trending) return [];
+
+  return trending;
+}
+
+const useTrending = () => useQuery<TrendingClass[]>("trending", trendingQuery);
+
+export { listingQuery, trendingQuery, useTrending };
