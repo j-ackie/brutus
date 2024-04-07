@@ -42,7 +42,7 @@ pub async fn create_drop(
 
     let result = sqlx::query_as!(
         Drop,
-        "INSERT INTO drop (class_id, user_id) VALUES ($1, $2) RETURNING id, class_id, user_id",
+        "INSERT INTO class_drop (class_id, user_id) VALUES ($1, $2) RETURNING id, class_id, user_id",
         class_id,
         user_id
     )

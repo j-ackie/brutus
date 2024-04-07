@@ -21,10 +21,10 @@ pub async fn get_trending(req: HttpRequest) -> ApiResult<HttpResponse> {
     let rows = sqlx::query_as!(
         Class,
         "
-        SELECT c.id, c.class_name, c.department, c.want_count, COUNT(drop.class_id) AS drop_count FROM (
+        SELECT c.id, c.class_name, c.department, c.want_count, COUNT(class_drop.class_id) AS drop_count FROM (
         SELECT class.id as id, class_name, department, COUNT(*) as want_count FROM want INNER JOIN class ON class.id = class_id GROUP BY class.id ORDER BY want_count DESC LIMIT 10
         ) as c 
-        LEFT JOIN drop ON drop.class_id = c.id 
+        LEFT JOIN class_drop ON class_drop.class_id = c.id 
         GROUP BY c.id, c.class_name, c.department, c.want_count;
         "
     )

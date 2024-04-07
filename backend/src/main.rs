@@ -111,6 +111,11 @@ async fn main() -> std::io::Result<()> {
         .await
         .expect("Failed to create pool");
 
+    sqlx::migrate!()
+        .run(&pool)
+        .await
+        .expect("Failed to run DB migrations");
+
     initialize_tables(&pool)
         .await
         .expect("Failed to initialize tables");
