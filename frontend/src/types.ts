@@ -34,4 +34,10 @@ type Listing = {
   created_at: string;
 };
 
-export { Listing, Want, Class, User };
+type Chat = {
+  id: number;
+  listing: Listing;
+  other_party: User;
+};
+
+export { Listing, Want, Class, User, Chat };

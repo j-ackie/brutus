@@ -7,22 +7,18 @@ use crate::{
 };
 
 use actix_web::{web, HttpMessage, HttpRequest, HttpResponse};
-use chrono::{DateTime, NaiveDateTime, TimeZone, Utc};
 use serde::{Deserialize, Serialize};
-use sqlx::{
-    types::time::{OffsetDateTime, PrimitiveDateTime},
-    PgPool, Row,
-};
+use sqlx::{types::time::OffsetDateTime, PgPool};
 
 #[derive(sqlx::FromRow, Serialize)]
-struct Listing {
-    id: i32,
-    poster: User,
-    title: String,
-    description: String,
-    have_class: Class,
-    want: Want,
-    created_at: String,
+pub struct Listing {
+    pub id: i32,
+    pub poster: User,
+    pub title: String,
+    pub description: String,
+    pub have_class: Class,
+    pub want: Want,
+    pub created_at: String,
 }
 
 #[derive(sqlx::FromRow)]

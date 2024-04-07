@@ -108,6 +108,12 @@ async fn main() -> std::io::Result<()> {
                     .to(endpoints::api::drop::create_drop)
                     .wrap(auth.clone()),
             )
+            .route(
+                "/chats",
+                web::get()
+                    .to(endpoints::api::chat::get_chats)
+                    .wrap(auth.clone()),
+            )
             .route("/oauth/redirect", web::get().to(endpoints::oauth::redirect))
             .route("/oauth/callback", web::get().to(endpoints::oauth::callback))
             .service(websocket::ws_route)

@@ -1,3 +1,4 @@
+pub mod chat;
 pub mod class;
 pub mod drop;
 pub mod listing;

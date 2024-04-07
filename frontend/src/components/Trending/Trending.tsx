@@ -75,14 +75,14 @@ function Trending() {
     labels,
     datasets: [
       {
-        label: "Desired",
-        data: queryData?.map((element: any) => -1 * element.want_count),
-        backgroundColor: "rgba(255, 0, 0, 0.5)",
+        label: "Want",
+        data: queryData?.map((element: any) => element.want_count),
+        backgroundColor: "rgba(0, 255, 0, 0.5)",
       },
       {
-        label: "Offered",
-        data: queryData?.map((element: any) => element.drop_count),
-        backgroundColor: "rgba(0, 255, 0, 0.5)",
+        label: "Drop",
+        data: queryData?.map((element: any) => -1 * element.drop_count),
+        backgroundColor: "rgba(255, 0, 0, 0.5)",
       },
     ],
   };
