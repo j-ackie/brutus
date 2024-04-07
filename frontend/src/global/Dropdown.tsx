@@ -5,9 +5,10 @@ type InputWithDropdownProps = {
   name: string;
   options: string[];
   onChange: (value: string) => void;
+  className?: string;
 };
 
-const InputWithDropdown: React.FC<InputWithDropdownProps> = ({ value, name, options, onChange }) => {
+const InputWithDropdown: React.FC<InputWithDropdownProps> = ({ value, name, options, onChange, className }) => {
   const [selectedValue, setSelectedValue] = useState(value);
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -60,7 +61,7 @@ const InputWithDropdown: React.FC<InputWithDropdownProps> = ({ value, name, opti
         onChange={(e) => setSelectedValue(e.target.value)}
         onFocus={handleInputFocus}
         onBlur={handleBlur}
-        className="p-2 outline-none border-b-2 focus:border-b-accent text-text bg-transparent"
+        className={className + " outline-none border-b-2 focus:border-b-accent text-text bg-transparent"}
       />
       {isDropdownOpen && (
         <select
