@@ -40,12 +40,14 @@ function Trending() {
       y: {
         ticks: {
           color: "white"
-        }
+        },
+        stacked: true
       },
       x: {
         ticks: {
           color: "white"
-        }
+        },
+        stacked: true
       }
     }
   };
@@ -58,7 +60,12 @@ function Trending() {
       {
         label: 'Desired',
         data: queryData.map((element) => element.wants),
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backgroundColor: 'rgba(0, 255, 0, 0.5)',
+      },
+      {
+        label: 'Dropped',
+        data: queryData.map((element) => -1 * element.gives),
+        backgroundColor: 'rgba(255, 0, 0, 0.5)',
       }
     ],
   };
