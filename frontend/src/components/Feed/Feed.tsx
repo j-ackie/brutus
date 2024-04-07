@@ -29,11 +29,11 @@ function Feed({
 }) {
   const { data, isLoading, isError } = useFeed();
 
-  if (isLoading) return <Loading />;
+  // if (isLoading) return <Loading />;
 
-  if (isError || !data) return null;
+  // if (isError || !data) return null;
 
-  const listings = data;
+  const listings = listingQuery();
   listings.sort(
     (a, b) =>
       new Date(b.created_at).getTime() - new Date(a.created_at).getTime()

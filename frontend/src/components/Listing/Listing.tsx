@@ -8,6 +8,7 @@ interface ListingProps {
 }
 
 function formatTimeAgo(created_at: string): string {
+  console.log(created_at);
   const timestampString = created_at;
   const timestampParts = timestampString.split(" ");
   const dateString = timestampParts[0];
