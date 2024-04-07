@@ -138,5 +138,7 @@ pub async fn callback(
     )
     .expect("Failed to encode token");
 
-    Ok(HttpResponse::Ok().json(token))
+    Ok(HttpResponse::SeeOther()
+        .append_header(("Location", "/"))
+        .json(token))
 }
