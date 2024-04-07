@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { SubHeading } from '../../global/Text';
 import { TextButton } from '../../global/Buttons';
-import InputWithDropdown from '../../components/Dropdown/Dropdown'; // Import your custom InputWithDropdown component
+import Input from '../../global/Input'; // Ensure this import path is correct
+import InputWithDropdown from '../../global/Dropdown';
 import { COLORS } from '../../global/Colors';
 
 const CreateListing = () => {
@@ -10,20 +11,20 @@ const CreateListing = () => {
   const [have, setHave] = useState('');
   const [want, setWant] = useState('');
   const [tags, setTags] = useState<string[]>([]);
-  
-  const randomOptions = [
-    'Mathematics',
-    'Physics',
-    'Chemistry',
-    'Biology',
-    'History',
-    'Literature',
-    'Computer Science',
-    'Art',
-    'Music',
-    'Geography'
+
+  const categories = [
+    'Core',
+    'Theory',
+    'Interfaces',
+    'Software Development/Programming Languages',
+    'Systems',
+    'Projects',
+    'Electives',
+    'Math',
+    'Other'
   ];
   
+
   const handleCreateListing = () => {
     // Here you can send the listing data to your backend or perform other actions
     console.log('Creating listing:', { user, description, have, want, tags });
@@ -35,11 +36,13 @@ const CreateListing = () => {
     }}>
       <div className="mb-4">
         <SubHeading text="Description: " color={COLORS.text} />
-        <InputWithDropdown
+        <Input 
+          type="text"
           value={description}
-          name={"description"}
-          options={randomOptions} // You can pass options for the dropdown here
-          onChange={(value: string) => setDescription(value)}
+          name="description"
+          placeholder="Enter a brief description..."
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => setDescription(e.target.value)}
+          className="" // Add any specific styling classes you need
         />
       </div>
       <div className="mb-4">
@@ -47,7 +50,7 @@ const CreateListing = () => {
         <InputWithDropdown
           value={have}
           name={"have"}
-          options={randomOptions} // You can pass options for the dropdown here
+          options={categories} // You can pass options for the dropdown here
           onChange={(value: string) => setHave(value)}
         />
       </div>
@@ -56,7 +59,16 @@ const CreateListing = () => {
         <InputWithDropdown
           value={want}
           name={"want"}
-          options={randomOptions} // You can pass options for the dropdown here
+          options={categories} // You can pass options for the dropdown here
+          onChange={(value: string) => setWant(value)}
+        />
+      </div>
+      <div className="mb-4">
+        <SubHeading text="Which classes do you want? " color={COLORS.text} />
+        <InputWithDropdown
+          value={want}
+          name={"want"}
+          options={categories} // You can pass options for the dropdown here
           onChange={(value: string) => setWant(value)}
         />
       </div>
