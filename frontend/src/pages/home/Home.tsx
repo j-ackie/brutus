@@ -13,6 +13,16 @@ function Home() {
 
   const [tab, setTab] = useState(TAB_STATE_ENUM.RECENTS)
 
+  let recentsStyle = "mr-8"
+  let trendingStyle = ""
+
+  if(tab == TAB_STATE_ENUM.RECENTS){
+    recentsStyle += " border-b-accent"
+  }
+  else{
+    trendingStyle += " border-b-accent"
+  }
+
   return (
     <div className='flex flex-col items-center justify-start h-screen pt-4' style = {
       {
@@ -20,8 +30,14 @@ function Home() {
       }
     }>
       <div className='pb-4'>
-        <TextButton text='Recents' onClick={() => {setTab(TAB_STATE_ENUM.RECENTS)}} className="mr-8"/>
-        <TextButton text='Trending' onClick={() => {setTab(TAB_STATE_ENUM.TRENDING)}}/>
+        <TextButton text='Recents' 
+          onClick={() => {setTab(TAB_STATE_ENUM.RECENTS)}} 
+          className={recentsStyle}
+        />
+        <TextButton text='Trending' 
+          onClick={() => {setTab(TAB_STATE_ENUM.TRENDING)}}
+          className={trendingStyle}
+        />
       </div>
       {
         tab == TAB_STATE_ENUM.RECENTS ? <Feed searchTerm=''/> : <Trending />
