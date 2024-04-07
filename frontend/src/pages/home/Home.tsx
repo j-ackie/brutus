@@ -24,7 +24,7 @@ function Home() {
         <TextButton text='Trending' onClick={() => {setTab(TAB_STATE_ENUM.TRENDING)}}/>
       </div>
       {
-        tab == TAB_STATE_ENUM.RECENTS ? <Feed /> : <Trending />
+        tab == TAB_STATE_ENUM.RECENTS ? <Feed searchTerm=''/> : <Trending />
       }
     </div>
   )
