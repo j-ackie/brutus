@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 export interface User {
   id: number;
@@ -33,3 +33,5 @@ const AuthContextProvider: React.FC<{ children: React.ReactNode }> = ({
 export const AuthContext = React.createContext<AuthContextType | null>(null);
 
 export default AuthContextProvider;
+
+export const useAuthContext = () => useContext(AuthContext)
