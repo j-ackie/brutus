@@ -39,7 +39,7 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
       flexDirection: 'column',
       maxWidth: '600px',
       padding: '20px',
-      border: `3px solid ${COLORS.text}`, 
+      border: `3px solid ${COLORS.accent}`, 
       borderRadius: '20px',
       margin: '20px auto',
       boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
@@ -73,7 +73,7 @@ const Listing: React.FC<ListingProps> = ({ user, description, have, want, tags, 
         <RegText text={timeAgo} color="#657786"/>
       </div>
       <div style={{ textAlign: 'left', marginBottom: '10px' }}>
-        <RegText text={description} color={COLORS.text}/>
+        <RegText text={description} color={COLORS.black}/>
       </div>
       <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px', marginTop: '10px' }}>
         {tags.map(tag => (

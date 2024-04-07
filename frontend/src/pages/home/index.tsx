@@ -15,7 +15,7 @@ function Home() {
         alignItems: 'center',
         justifyContent: 'center',
         height: '100vh',
-        backgroundColor: COLORS.primary
+        background: `linear-gradient(45deg, ${COLORS.primary}, ${COLORS.accent2})`,
       }
     }>
       

@@ -16,7 +16,7 @@ const COLORS = {
   // paradise pink
   'accent3': "#ed3d63",
   // light blue
-  'lightblue': '#a2aae1', 
+  'lightblue': '#a9c8ff', 
   // red button
   'red': "#dc3545",
   // green button
