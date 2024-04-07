@@ -32,7 +32,7 @@ function Feed({ searchTerm = '' }: { searchTerm: string }) {
   const searchResults: ListingItem[] = searchTerm ? fuse.search(searchTerm).map((item: any) => ({ ...item.item, id: generateId() })) : listings.map((item: any) => ({ ...item, id: generateId() }));
 
   return (
-    <div className='overflow-y-scroll'>
+    <div className='overflow-y-scroll pb-20'>
       {searchResults.map((result, index) => (
         <Listing key={result.id} {...result} />
       ))}
